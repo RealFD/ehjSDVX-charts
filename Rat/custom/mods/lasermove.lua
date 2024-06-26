@@ -35,7 +35,7 @@ xero.definemod {"LaserSetWaveX", function (p)
     SplineType(SpCordX)
     SetMod("L1")
     for i = 0, (splineamount - 1) do
-        local t = (i / val) * 2 * math.pi * 5  -- adjust frequency
+        local t = (i / splineamount) * 2 * math.pi * 5  -- adjust frequency
         SplineProp(i, (i - val) / val, SpLinear)
         ModSpline(i, math.sin(t) * 0.3)
     end
@@ -43,7 +43,7 @@ xero.definemod {"LaserSetWaveX", function (p)
     SplineType(SpCordX)
     SetMod("R1")
     for i = 0, (splineamount - 1) do
-        local t = (i / val) * 2 * math.pi * 5  -- adjust frequency
+        local t = (i / splineamount) * 2 * math.pi * 5  -- adjust frequency
         SplineProp(i, (i - val) / val, SpLinear)
         ModSpline(i, -math.sin(t) * 0.3)
     end
@@ -55,7 +55,7 @@ xero.definemod {"LaserSetWaveY", function (p)
     SplineType(SpCordZ)
     SetMod("L2")
     for i = 0, (splineamount - 1) do
-        local t = (i / val) * 2 * math.pi * 5  -- adjust frequency
+        local t = (i / splineamount) * 2 * math.pi * 5  -- adjust frequency
         SplineProp(i, (i - val) / val, SpLinear)
         ModSpline(i, math.cos(t) * 0.3)  -- Use cos to synchronize with X
     end
@@ -63,7 +63,7 @@ xero.definemod {"LaserSetWaveY", function (p)
     SplineType(SpCordZ)
     SetMod("R2")
     for i = 0, (splineamount - 1) do
-        local t = (i / val) * 2 * math.pi * 5  -- adjust frequency
+        local t = (i / splineamount) * 2 * math.pi * 5  -- adjust frequency
         SplineProp(i, (i - val) / val, SpLinear)
         ModSpline(i, -math.cos(t) * 0.3)  -- Use cos to synchronize with X
     end
