@@ -41,7 +41,7 @@ xero.definemod {"LaserSetWaveX", function (p)
         else
             SplineProp(i, (i-val*64) / (val*64), SpLinear)
         end
-        ModSpline(i, math.sin(t) * 0.3)
+        ModSpline(i,val * math.sin(t) * 0.3)
     end
 
     SplineType(SpCordX)
@@ -53,7 +53,7 @@ xero.definemod {"LaserSetWaveX", function (p)
         else
             SplineProp(i, (i-val*64) / (val*64), SpLinear)
         end
-        ModSpline(i, -math.sin(t) * 0.3)
+        ModSpline(i,val * -math.sin(t) * 0.3)
     end
 end}
 xero.setdefault{0, "LaserSetWaveX"}
@@ -69,7 +69,7 @@ xero.definemod {"LaserSetWaveY", function (p)
         else
             SplineProp(i, (i-val*64) / (val*64), SpLinear)
         end
-        ModSpline(i, math.cos(t) * 0.3)  -- Use cos to synchronize with X
+        ModSpline(i, val * math.cos(t) * 0.3)  -- Use cos to synchronize with X
     end
 
     SplineType(SpCordZ)
@@ -81,7 +81,7 @@ xero.definemod {"LaserSetWaveY", function (p)
         else
             SplineProp(i, (i-val*64) / (val*64), SpLinear)
         end
-        ModSpline(i, -math.cos(t) * 0.3)  -- Use cos to synchronize with X
+        ModSpline(i, val * -math.cos(t) * 0.3)  -- Use cos to synchronize with X
     end
 end}
 xero.setdefault{0, "LaserSetWaveY"}

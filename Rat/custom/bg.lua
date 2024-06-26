@@ -175,20 +175,20 @@ function init()
 		dofile(background.GetPath().."defMods.lua")
 
 		loadMod("setspeed")
-		--loadMod("rotate")
-		--loadMod("lanes")
+		loadMod("rotate")
+		loadMod("lanes")
 		loadMod("lasermove")
-		--loadMod("buttonsmove")
+		loadMod("buttonsmove")
 		loadMod("side")
-		--loadMod("Highway")
+		loadMod("Highway")
 
-		--xero.setdefault{0.01,"BTA_M"}
-		--xero.setdefault{0.01,"BTB_M"}
+		xero.setdefault{0.01,"BTA_M"}
+		xero.setdefault{0.01,"BTB_M"}
 
 		for _, set in ipairs(setLaneMod) do
 			local value1, value2, labels = set[1], set[2], set[3]
 			for _, label in ipairs(labels) do
-				--xero.set{value1, value2, label}
+				xero.set{value1, value2, label}
 			end
 		end
 
@@ -201,23 +201,23 @@ function init()
 		xero.ease{6,1,flip(linear),1,ModNames.RotationTable.Side.LS}
 		xero.ease{8.2,1,flip(linear),1,ModNames.RotationTable.Side.RS}
 
-		--xero.ease{79,1,linear,40,"CH"}
+		xero.ease{79,1,linear,40,"CH"}
 
-		--xero.ease{90,1,linear,0.1,"CH"}
+		xero.ease{90,1,linear,0.1,"CH"}
 
 		xero.ease{109.5,1.5,bounce,1,"LaserSetWaveX"}
 		xero.set{110.75,0,"LaserSetWaveX"}
 		xero.ease{109.5,1.5,bounce,1,"LaserSetWaveY"}
 		xero.set{110.75,0,"LaserSetWaveY"}
 
-		--xero.ease{109.5,1.5,bounce,.5,ModNames.TansitionTable.Side.BH}
+		xero.ease{109.5,1.5,bounce,.5,ModNames.TansitionTable.Side.BH}
 
 		--xero.ease{47.85,2,outSine,0,"idk"} -- pixel version ???
 
-		--xero.ease{49.65,1,bell,0.75,ModNames.TansitionTable.Side.LS}
-		--xero.ease{49.65,1,bell,0.75,ModNames.TansitionTable.Side.RS}
+		xero.ease{49.65,1,bell,0.75,ModNames.TansitionTable.Side.LS}
+		xero.ease{49.65,1,bell,0.75,ModNames.TansitionTable.Side.RS}
 
-		--xero.ease{113,0,instant,100,ModNames.TansitionTable.Side.BH}
+		xero.ease{113,0,instant,100,ModNames.TansitionTable.Side.BH}
 
 		xero.init_command()
 end
