@@ -225,7 +225,7 @@ function render_bg(deltaTime)
 		--loadMod("lanes")
 		loadMod("lasermove")
 		--loadMod("buttonsmove")
-		--loadMod("side")
+		loadMod("side")
 		--loadMod("Highway")
 
 		--xero.setdefault{0.01,"BTA_M"}
@@ -235,19 +235,17 @@ function render_bg(deltaTime)
 			local value1, value2, labels = set[1], set[2], set[3]
 			for _, label in ipairs(labels) do
 				--xero.set{value1, value2, label}
-				SetMod(label)
-				EnableMod(false)
 			end
 		end
 
-		--xero.ease{4,100,outElastic,math.pi/2,ModNames.RotationTable.Side.BH}
-		--xero.set{5,100,ModNames.RotationTable.Side.BH}
-		--xero.ease{113.25,2,spike,0,ModNames.RotationTable.Side.BH}
+		xero.ease{4,100,outElastic,math.pi/2,ModNames.RotationTable.Side.BH}
+		xero.set{5,100,ModNames.RotationTable.Side.BH}
+		xero.ease{113.25,2,spike,0,ModNames.RotationTable.Side.BH}
 
-		--xero.ease{6,1,flip(linear),0.5,ModNames.TansitionTable.Side.LS}
-		--xero.ease{8.2,1,flip(linear),0.5,ModNames.TansitionTable.Side.RS}
-		--xero.ease{6,1,flip(linear),1,ModNames.RotationTable.Side.LS}
-		--xero.ease{8.2,1,flip(linear),1,ModNames.RotationTable.Side.RS}
+		xero.ease{6,1,flip(linear),0.5,ModNames.TansitionTable.Side.LS}
+		xero.ease{8.2,1,flip(linear),0.5,ModNames.TansitionTable.Side.RS}
+		xero.ease{6,1,flip(linear),1,ModNames.RotationTable.Side.LS}
+		xero.ease{8.2,1,flip(linear),1,ModNames.RotationTable.Side.RS}
 
 		--xero.ease{79,1,linear,40,"CH"}
 

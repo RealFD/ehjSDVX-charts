@@ -48,7 +48,7 @@ xero.definemod {"LaserSetWaveX", function (p)
         ModSpline(i, -math.sin(t) * 0.3)
     end
 end}
-xero.setdefault{0, "LaserSetWaveX"}
+xero.setdefault{0.01, "LaserSetWaveX"}
 
 xero.definemod {"LaserSetWaveY", function (p)
     local val = p
@@ -68,5 +68,5 @@ xero.definemod {"LaserSetWaveY", function (p)
         ModSpline(i, -math.cos(t) * 0.3)  -- Use cos to synchronize with X
     end
 end}
-xero.setdefault{0, "LaserSetWaveY"}
+xero.setdefault{0.01, "LaserSetWaveY"}
 
