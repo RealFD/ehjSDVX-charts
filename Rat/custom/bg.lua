@@ -159,57 +159,11 @@ local function debuger(state,tab,pos)
 	end
 end
 
-local bInit = false
 function init()
-	bInit = true
-end
-
-xero = {
-	foreground = self,
-	dir = background.GetPath()
-}
-dofile(background.GetPath().."template/std.lua")
-dofile(background.GetPath().."template/sort.lua")
-dofile(background.GetPath().."template/ease.lua")
-dofile(background.GetPath().."template/template.lua")
-
-local timbg = 0
-
-function render_bg(deltaTime)
-	timbg = timbg + deltaTime
-
-	local counter = 0
-	local acounter = 0
-	local bcounter = 0
-	local ccounter = 0
-
-	background.DrawShader()
-	
-	local bpm = gameplay.bpm
-	barTimer, offSync, trackTimer = background.GetTiming()
-	local currBeat = background.GetBeat()
-	local beat = currBeat+background.GetBarTime()
-	gDeltaTime = deltaTime
-
-	local gTable = {
-		pos ={50,700},
-		info = {{"bpm",bpm},{"barTimer",beat_to_str(barTimer)},{"offSync",offSync},{"trackTimer",trackTimer},{"currBeat",currBeat},{"beat",beat},{"gDeltaTime",gDeltaTime},{"TimeByBeat",background.GetTimeByBeat(39)}}
-	}
-
-	debuger(true,gTable.info,gTable.pos)
-
-	--mod.LaneHide(0)
-
-	timbg = timbg + impulse(background.GetBarTime()*2%1) * deltaTime * 10
-
-	background.SetParamf("LUAtimer", timbg)
-
-	if not bInit then
-		mod.setDepthTest(mdv.MA_LS,false)
+	mod.setDepthTest(mdv.MA_LS,false)
 		mod.setDepthTest(mdv.MA_HLD,false)
 		mod.setDepthTest(mdv.MA_BT,false)
 		background.SetParamf("LUAalpha", 1)
-		init()
 		--mod.setMQTrack(1)
 		--mod.setMQLaser(1)
 		--mod.setMQHold(1)
@@ -266,7 +220,47 @@ function render_bg(deltaTime)
 		--xero.ease{113,0,instant,100,ModNames.TansitionTable.Side.BH}
 
 		xero.init_command()
-	end
+end
+
+xero = {
+	foreground = self,
+	dir = background.GetPath()
+}
+dofile(background.GetPath().."template/std.lua")
+dofile(background.GetPath().."template/sort.lua")
+dofile(background.GetPath().."template/ease.lua")
+dofile(background.GetPath().."template/template.lua")
+
+local timbg = 0
+
+function render_bg(deltaTime)
+	timbg = timbg + deltaTime
+
+	local counter = 0
+	local acounter = 0
+	local bcounter = 0
+	local ccounter = 0
+
+	background.DrawShader()
+	
+	local bpm = gameplay.bpm
+	barTimer, offSync, trackTimer = background.GetTiming()
+	local currBeat = background.GetBeat()
+	local beat = currBeat+background.GetBarTime()
+	gDeltaTime = deltaTime
+
+	local gTable = {
+		pos ={50,700},
+		info = {{"bpm",bpm},{"barTimer",beat_to_str(barTimer)},{"offSync",offSync},{"trackTimer",trackTimer},{"currBeat",currBeat},{"beat",beat},{"gDeltaTime",gDeltaTime},{"TimeByBeat",background.GetTimeByBeat(39)}}
+	}
+
+	debuger(true,gTable.info,gTable.pos)
+
+	--mod.LaneHide(0)
+
+	timbg = timbg + impulse(background.GetBarTime()*2%1) * deltaTime * 10
+
+	background.SetParamf("LUAtimer", timbg)
 
 	for index, value in ipairs(TT) do
 		if beat >= value then
