@@ -205,10 +205,10 @@ function init()
 
 		xero.ease{90,1,linear,0.1,"CH"}
 
-		xero.ease{109.5,1.5,bounce,1,"LaserSetWaveX"}
-		xero.set{110.75,0,"LaserSetWaveX"}
-		xero.ease{109.5,1.5,bounce,1,"LaserSetWaveY"}
-		xero.set{110.75,0,"LaserSetWaveY"}
+		xero.ease{109.5,1.3,bounce,1,"LaserSetWaveX"}
+		xero.ease{110,75,instant,0,"LaserSetWaveX"}
+		xero.ease{109.5,1.3,bounce,1,"LaserSetWaveY"}
+		xero.ease{110,75,instant,0,"LaserSetWaveY"}
 
 		xero.ease{109.5,1.5,bounce,.5,ModNames.TansitionTable.Side.BH}
 

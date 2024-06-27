@@ -1,227 +1,64 @@
---- ModAffection Types ---
-
---[[
-># Effects following Layers #
----------------------------------------------------------
-* Buttons
-* Holds
-* Lasers
-* Track
-* Lines
-]]
 AllAF            = mdv.MA_ALL
-
---[[
-># Effects following Layers #
----------------------------------------------------------
-* Buttons
-]]
 BTAF             = mdv.MA_BT
-
---[[
-># Effects following Layers #
----------------------------------------------------------
-* Holds
-]]
 HoldAF           = mdv.MA_HLD
-
---[[
-># Effects following Layers #
----------------------------------------------------------
-* Lasers
-]]
 LaserAF          = mdv.MA_LS
-
---[[
-># Effects following Layers #
----------------------------------------------------------
-* Track
-]]
 TrackAF          = mdv.MA_TRK
-
---[[
-># Effects following Layers #
----------------------------------------------------------
-* Lines
-]]
 LineAF           = mdv.MA_LIN
-
---[[
-># Effects following Layers #
----------------------------------------------------------
-* Button Hit Effect
-]]
 BHEAF            = mdv.MA_BHE
 
-
---- Ways of Moving / Rotation / Scaling ---
-
---[[
-># Translation Modification #
-]]
 TransMod         = mdv.MT_T
-
---[[
-># Rotation Modification #
-]]
 RotMod           = mdv.MT_R
-
---[[
-># Scaling Modification #
-]]
 ScaleMod         = mdv.MT_S
 
---[[
-># Spline Easing #
----------------------------------------------------------
-* Linear
-]]
 SpLinear         = mdv.SIT_LIN
-
---[[
-># Spline Easing #
----------------------------------------------------------
-* Cosine
-]]
 SpCosine         = mdv.SIT_COS
-
---[[
-># Spline Easing #
----------------------------------------------------------
-* Cubic
-]]
 SpCubic          = mdv.SIT_CUB
-
---[[
-># Spline Easing #
----------------------------------------------------------
-* Nothing
-]]
 SpNo             = mdv.SIT_NON
 
---[[
-># Creating Splines #
----------------------------------------------------------
->* Needs a Value in the ()
----------------------------------------------------------
-># Example
-> MakeSpline(64)
-]]
 MakeSpline       = mod.createSpline
 
---[[
-># Spline Property #
----------------------------------------------------------
-> Sets the Spline Property
->* (i, value, easing)
-]]
 SplineProp       = mod.setSplineProperty
 
---[[
-># Setting Spline Type #
----------------------------------------------------------
-> Sets the Type to one of the Following
->* "SpCordX" goes to the Right
->* "SpCordY" goes up from the Critline
->* "SpCordZ" goes up from the Track
----------------------------------------------------------
-># Example
-> SplineType(SpCordX)
-]]
 SplineType       = mod.setEModSplineType
 
---[[
-># Modificating Spline #
----------------------------------------------------------
-> Needs the Following
->* i = spline index from a for loop
->* value
----------------------------------------------------------
-># Example
-> ModSpline(i, val)
-]]
 ModSpline        = mod.setModSpline
 
---[[
-># Layering Modificating #
----------------------------------------------------------
-> For setting the Mods on there own Layers
----------------------------------------------------------
-># Example
-> ModLayer(0)
-]]
 ModLayer         = mod.setModLayer
 
---[[
-># Adding Modificatings #
----------------------------------------------------------
-> Add your Own Mods by Simply putting a string in the ()
----------------------------------------------------------
-># Example
-> AddMod("Test") |--> "Test was added to list of mods"
-]]
 AddMod           = mod.addMod
 
---[[
-># Setting Modificatings up #
----------------------------------------------------------
-> Make the Code after this line be bound to the Mod in the ()
----------------------------------------------------------
-># Example
-> SetMod("Test")
----------------------------------------------------------
-> AddMod("Test",TransMod)
-> SetMod("Test")
-> ModLayer(0)
-> MakeSpline(64)
-]]
-SetMod           = mod.setEMod             -- Makes the code after be bound to the mod in the ()
+SetMod           = mod.setEMod
 EnableMod        = mod.setModEnable
-ModProp          = mod.setModProperty      -- Set the Properties of the mod (lane,object type)
-SetSpeed         = mod.SetHispeed          -- Apply current Speed set in the ()
+ModProp          = mod.setModProperty
+SetSpeed         = mod.SetHispeed
 
-EvalueModTrans   = mod.evaluateModTransform -- needs 4 things (Vector3, Offset, Button Index, ModAffection)
+EvalueModTrans   = mod.evaluateModTransform
 
 -- Ways the Highway can move on givin Axis --
 
---[[
-># Axis Movement #
----------------------------------------------------------
-> Sets the Type to go to the Right
-]]
 SpCordX          = mdv.MST_X
 
---[[
-># Axis Movement #
----------------------------------------------------------
-> Sets the Type to go up from the Critline
-]]
-SpCordY          = mdv.MST_Y -- Foward or Backward ????
+SpCordY          = mdv.MST_Y
 
---[[
-># Axis Movement #
----------------------------------------------------------
-> Sets the Type to go up from the Track
-]]
-SpCordZ          = mdv.MST_Z -- Up or Down
+SpCordZ          = mdv.MST_Z
 
-All              = mdv.ML_ALL -- All Types
-AllBT            = mdv.ML_BT -- All Buttons
-AllFX            = mdv.ML_FX -- All FX Buttons
-AllL             = mdv.ML_LS -- All Lasers
+All              = mdv.ML_ALL
+AllBT            = mdv.ML_BT
+AllFX            = mdv.ML_FX
+AllL             = mdv.ML_LS
 
 -- Just Key --
 
-LaserL           = mdv.LSL -- Laser Left
-LaserR           = mdv.LSR -- Laser Right
+LaserL           = mdv.LSL
+LaserR           = mdv.LSR
 
-BTA              = mdv.BTA -- Button A
-BTB              = mdv.BTB -- Button B
-BTC              = mdv.BTC -- Button C
-BTD              = mdv.BTD -- Button D
+BTA              = mdv.BTA
+BTB              = mdv.BTB
+BTC              = mdv.BTC
+BTD              = mdv.BTD
 
-FXL              = mdv.FXL -- FX Button Left
-FXR              = mdv.FXR -- FX Button Right
+FXL              = mdv.FXL
+FXR              = mdv.FXR
 
 -- Combies --
 

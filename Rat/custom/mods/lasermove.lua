@@ -37,7 +37,7 @@ xero.definemod {"LaserSetWaveX", function (p)
     for i = 0, (splineamount - 1) do
         local t = val*(i / splineamount) * 2 * math.pi * 5  -- adjust frequency
         if p==0 then
-            SplineProp(i, i/127, SpLinear)
+            SplineProp(i, i/(splineamount - 1), SpLinear)
         else
             SplineProp(i, (i-val*64) / (val*64), SpLinear)
         end
@@ -49,7 +49,7 @@ xero.definemod {"LaserSetWaveX", function (p)
     for i = 0, (splineamount - 1) do
         local t = val*(i / splineamount) * 2 * math.pi * 5  -- adjust frequency
         if p==0 then
-            SplineProp(i, i/127, SpLinear)
+            SplineProp(i, i/(splineamount - 1), SpLinear)
         else
             SplineProp(i, (i-val*64) / (val*64), SpLinear)
         end
@@ -65,7 +65,7 @@ xero.definemod {"LaserSetWaveY", function (p)
     for i = 0, (splineamount - 1) do
         local t = val*(i / splineamount) * 2 * math.pi * 5  -- adjust frequency
         if p==0 then
-            SplineProp(i, i/127, SpLinear)
+            SplineProp(i, i/(splineamount - 1), SpLinear)
         else
             SplineProp(i, (i-val*64) / (val*64), SpLinear)
         end
@@ -77,7 +77,7 @@ xero.definemod {"LaserSetWaveY", function (p)
     for i = 0, (splineamount - 1) do
         local t = val*(i / splineamount) * 2 * math.pi * 5  -- adjust frequency
         if p==0 then
-            SplineProp(i, i/127, SpLinear)
+            SplineProp(i, i/(splineamount - 1), SpLinear)
         else
             SplineProp(i, (i-val*64) / (val*64), SpLinear)
         end
