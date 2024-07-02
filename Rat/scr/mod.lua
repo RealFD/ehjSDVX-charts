@@ -74,8 +74,8 @@ end
 
 ---# Modification Toggeling 
 ---------------------------------------------------------
---- @param State boolean Toggles the Current Mod with `true` or `false`
-function mod.setModEnable(State)
+--- @param state boolean Toggles the Current Mod with `true` or `false`
+function mod.setModEnable(state)
 end
 
 ---# Modification Properties
@@ -92,14 +92,14 @@ end
 
 ---# Modification Layer 
 ---------------------------------------------------------
---- @param int integer The Higher the `int` the more you have to look out 
+--- @param int integer When `int` >= 0, higher layers get applied after lower layers
 function mod.setModLayer(int)
 end
 
 ---# Evaluating Modification Transformation 
 ---------------------------------------------------------
---- @param Position Vector3 Needs {`x`,`y`,`z`} Vector in a Table
---- @param Offset integer An Offest
+--- @param Position Vector3 Needs {`x`,`y`,`z`} Table Transformation applied in TickLayer
+--- @param Offset integer `yOffset` used for Spline Evaluating
 --- @param ButtonIndex integer Something related to Buttons
 --- @param ModAffection integer found in `mdv.lua` under any of the `mdv.MA_`
 function mod.evaluateModTransform(Position, Offset, ButtonIndex, ModAffection)

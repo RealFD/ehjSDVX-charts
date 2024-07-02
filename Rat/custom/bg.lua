@@ -214,8 +214,15 @@ function init()
 
 		--xero.ease{47.85,2,outSine,0,"idk"} -- pixel version ???
 
-		xero.ease{49.65,1,bell,0.75,ModNames.TansitionTable.Side.LS}
-		xero.ease{49.65,1,bell,0.75,ModNames.TansitionTable.Side.RS}
+		xero.ease{36.77,0.25,bounce,0.5,ModNames.TansitionTable.Side.LS}
+		xero.ease{37.25,0.25,bounce,0.5,ModNames.TansitionTable.Side.RS}
+
+		xero.ease{38.88,0.25,flip(bounce),0.25,ModNames.TansitionTable.Side.BH}
+		xero.ease{39.14,0.1,flip(bounce),0.5,ModNames.TansitionTable.Side.BH}
+		xero.ease{39.25,0.1,flip(bounce),0.75,ModNames.TansitionTable.Side.BH}
+		xero.ease{39.35,0.5,flip(bounce),0,ModNames.TansitionTable.Side.BH}
+
+		xero.ease{49.65,0.5,bounce,0.75,ModNames.TansitionTable.Side.BH}
 
 		xero.ease{113,0,instant,100,ModNames.TansitionTable.Side.BH}
 
@@ -240,6 +247,7 @@ function render_bg(deltaTime)
 	local acounter = 0
 	local bcounter = 0
 	local ccounter = 0
+	local state
 
 	background.DrawShader()
 	
@@ -254,7 +262,13 @@ function render_bg(deltaTime)
 		info = {{"bpm",bpm},{"barTimer",beat_to_str(barTimer)},{"offSync",offSync},{"trackTimer",trackTimer},{"currBeat",currBeat},{"beat",beat},{"gDeltaTime",gDeltaTime},{"TimeByBeat",background.GetTimeByBeat(39)}}
 	}
 
-	debuger(true,gTable.info,gTable.pos)
+	if gameplay.practice_setup then
+		state = true
+	else
+		state = false
+	end
+
+	debuger(state,gTable.info,gTable.pos)
 
 	--mod.LaneHide(0)
 
