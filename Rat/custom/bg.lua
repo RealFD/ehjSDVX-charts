@@ -211,7 +211,7 @@ function init()
 
 		test1 = gfx.CreateShadedMesh(shaderTable[7].naming,background.GetPath().."shaders"..shaderTable[7].path)
 
-		test1:SetPrimitiveType(test1.PRIM_TRIFAN)
+		test1:SetPrimitiveType(test1.PRIM_TRILIST)
 		test1:SetBlendMode(test1.BLEND_NORM)
 
 		test1:SetData(OBJ)
@@ -295,8 +295,6 @@ function render_bg(deltaTime)
 	local state
 
 	background.DrawShader()
-
-	test1:Draw()
 	
 	local bpm = gameplay.bpm
 	barTimer, offSync, trackTimer = background.GetTiming()
@@ -405,4 +403,11 @@ function render_bg(deltaTime)
 
 	xero.update_command()
 	
+end
+
+function render_fg()
+
+	test1:SetParamVec4("color", 1.0, 1.0, 1.0, 1.0)
+
+	test1:Draw()
 end
