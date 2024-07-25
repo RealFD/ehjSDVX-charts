@@ -204,15 +204,15 @@ function init()
 
 		--test:AddSkinTexture("myTexture", "track.png")
 
-		test:AddTexture("myTexture",background.GetPath().."shaders"..shaderTable[1].path.."track3.png")
+		test:AddTexture("myTexture",background.GetPath().."shaders"..shaderTable[1].path.."track2.png")
 
 		test:SetPrimitiveType(test.PRIM_TRIFAN)
 		test:SetBlendMode(test.BLEND_NORM)
 
 		test1 = gfx.CreateShadedMesh(shaderTable[7].naming,background.GetPath().."shaders"..shaderTable[7].path)
 
-		test1:SetPrimitiveType(test.PRIM_TRIFAN)
-		test1:SetBlendMode(test.BLEND_NORM)
+		test1:SetPrimitiveType(test1.PRIM_TRIFAN)
+		test1:SetBlendMode(test1.BLEND_NORM)
 
 		test1:SetData(OBJ)
 

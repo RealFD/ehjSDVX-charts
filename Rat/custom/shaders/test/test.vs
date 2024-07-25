@@ -15,10 +15,11 @@ layout(location=1) out vec2 fsTex;
 #endif
 
 uniform mat4 proj;
+uniform mat4 camera;
 uniform mat4 world;
 
 void main()
 {
 	fsTex = inTex;
-	gl_Position = proj * world * vec4(inPos, 1);
+	gl_Position = proj * camera * world * vec4(inPos, 1);
 }
