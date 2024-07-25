@@ -24,7 +24,7 @@ local shaderTable = {
 local test
 local test1
 
-local OBJ = require("shaders/test/model.lua")
+local OBJ = require("shaders/test/model")
 
 --all shorts are found in this file
 dofile(background.GetPath().."template/vals.lua")
