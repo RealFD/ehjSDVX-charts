@@ -34,6 +34,9 @@ SetSpeed         = mod.SetHispeed
 
 EvalueModTrans   = mod.evaluateModTransform
 
+SetPipe          = mod.setTrackPipe
+ResetPipe        = mod.resetTrackPipe
+
 -- Ways the Highway can move on givin Axis --
 
 SpCordX          = mdv.MST_X

@@ -196,8 +196,16 @@ mdv.ML_LS = 64+128
 --- @type integer
 mdv.ML_ALL = 256-1
 
+-- Track Pipe Material
+--- @type integer
+mdv.TP_MATERIAL = 0
 
+-- Track Pipe Parameters
+--- @type integer
+mdv.TP_PARAMS = 1
 
-
+-- Track Pipe Mesh
+--- @type integer
+mdv.TP_MESH = 2
 
 return mdv

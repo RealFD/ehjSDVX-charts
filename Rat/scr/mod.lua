@@ -22,7 +22,11 @@
 ---> - `setModLayer` Sets the Mod on their Own Layer
 ---> - `evaluateModTransform` //TODO Find out how to describe it
 ---------------------------------------------------------
----># Speed
+---># Pipe:
+---------------------------------------------------------
+---> - ``
+---------------------------------------------------------
+---># Speed:
 ---------------------------------------------------------
 ---> - `SetHispeed` You can Change the Speed on the Fly
 mod = {}
@@ -103,6 +107,21 @@ end
 --- @param ButtonIndex integer Something related to Buttons
 --- @param ModAffection integer found in `mdv.lua` under any of the `mdv.MA_`
 function mod.evaluateModTransform(Position, Offset, ButtonIndex, ModAffection)
+end
+
+---# Modification Track Pipeline
+---------------------------------------------------------
+--- @param TrackPipeType integer used to set custom shaders
+--- @param ModAffection integer found in `mdv.lua` under any of the `mdv.MA_`
+--- @param ShadedMesh mesh where the parameters are taken from
+function mod.setTrackPipe(TrackPipeType,ModAffection,ShadedMesh)
+end
+
+---# Reseting Track Pipeline
+---------------------------------------------------------
+--- @param TrackPipeType integer used to set custom shaders
+--- @param ModAffection integer found in `mdv.lua` under any of the `mdv.MA_`
+function mod.resetTrackPipe(TrackPipeType,ModAffection)
 end
 
 ---# Speed Modification

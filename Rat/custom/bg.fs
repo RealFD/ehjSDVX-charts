@@ -14,6 +14,7 @@ uniform float LUAtimer;
 uniform float LUAfadeOutTimer;
 
 uniform float LUAalpha;
+uniform float NUMOCTAVES;
 
 float random (in vec2 _st) {
     return fract(sin(dot(_st.xy,
@@ -64,8 +65,6 @@ float noise(vec3 p){
     return o4.y * d.y + o4.x * (1.0 - d.y);
 }
 
-#define NUM_OCTAVES 0 // have been 5
-
 float fbm ( in vec2 _st) {
     float t = 1.;
     float v = 0.;
@@ -74,7 +73,7 @@ float fbm ( in vec2 _st) {
     // Rotate to reduce axial bias
     mat2 rot = mat2(cos(0.5), sin(0.5),
                     -sin(0.5), cos(0.5));
-    for (int i = 0; i < NUM_OCTAVES; ++i) {
+    for (int i = 0; i < NUMOCTAVES; ++i) {
         v += a * noise(vec3(_st, t));
         _st = rot * _st * 2.0 + shift;
         a *= 0.5;

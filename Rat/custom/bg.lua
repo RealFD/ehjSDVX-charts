@@ -11,6 +11,21 @@ end
 
 resx, resy = game.GetResolution()
 
+local shaderTable = {
+	{naming="track",path="\\track\\"},
+	{naming="grid",path="\\grid\\"},
+	{naming="kaleidoscope",path="\\kaleidoscope\\"},
+	{naming="pulse",path="\\pulse\\"},
+	{naming="posturize",path="\\posturize\\"},
+	{naming="spin",path="\\spin\\"},
+	{naming="test",path="\\test\\"},
+}
+
+local test
+local test1
+
+local OBJ = require("shaders/test/model.lua")
+
 --all shorts are found in this file
 dofile(background.GetPath().."template/vals.lua")
 
@@ -160,10 +175,9 @@ local function debuger(state,tab,pos)
 end
 
 function init()
-	mod.setDepthTest(mdv.MA_LS,false)
+		mod.setDepthTest(mdv.MA_LS,false)
 		mod.setDepthTest(mdv.MA_HLD,false)
 		mod.setDepthTest(mdv.MA_BT,false)
-		background.SetParamf("LUAalpha", 1)
 		--mod.setMQTrack(1)
 		--mod.setMQLaser(1)
 		--mod.setMQHold(1)
@@ -181,9 +195,26 @@ function init()
 		loadMod("buttonsmove")
 		loadMod("side")
 		loadMod("Highway")
+		loadMod("change")
 
 		xero.setdefault{0.01,"BTA_M"}
 		xero.setdefault{0.01,"BTB_M"}
+
+		test = gfx.CreateShadedMesh(shaderTable[1].naming,background.GetPath().."shaders"..shaderTable[1].path)
+
+		--test:AddSkinTexture("myTexture", "track.png")
+
+		test:AddTexture("myTexture",background.GetPath().."shaders"..shaderTable[1].path.."track3.png")
+
+		test:SetPrimitiveType(test.PRIM_TRIFAN)
+		test:SetBlendMode(test.BLEND_NORM)
+
+		test1 = gfx.CreateShadedMesh(shaderTable[7].naming,background.GetPath().."shaders"..shaderTable[7].path)
+
+		test1:SetPrimitiveType(test.PRIM_TRIFAN)
+		test1:SetBlendMode(test.BLEND_NORM)
+
+		test1:SetData(OBJ)
 
 		for _, set in ipairs(setLaneMod) do
 			local value1, value2, labels = set[1], set[2], set[3]
@@ -201,9 +232,16 @@ function init()
 		xero.ease{6,1,flip(linear),1,ModNames.RotationTable.Side.LS}
 		xero.ease{8.2,1,flip(linear),1,ModNames.RotationTable.Side.RS}
 
-		xero.ease{79,1,linear,40,"CH"}
+		xero.ease{79,1,linear,25,"CH:Z"}
+		xero.ease{90,1,linear,0.1,"CH:Z"}
 
-		xero.ease{90,1,linear,0.1,"CH"}
+		xero.ease{4,0.5,outSine,{1,1},"Modify"}
+
+		xero.ease{10,0.5,linear,{1,10},"Modify"}
+
+		xero.ease{28.5,0.5,outSine,{1,1},"Modify"}
+
+		xero.ease{28.5,1,linear,{0.25,5},"xspeedP"}
 
 		xero.ease{109.5,1.3,bounce,1,"LaserSetWaveX"}
 		xero.ease{110,75,instant,0,"LaserSetWaveX"}
@@ -212,17 +250,22 @@ function init()
 
 		xero.ease{109.5,1.5,bounce,.5,ModNames.TansitionTable.Side.BH}
 
+		xero.ease{36.75,0.5,bounce,-0.5,ModNames.TansitionTable.Lane.LL}
+		xero.ease{37.25,0.5,bounce,0.5,ModNames.TansitionTable.Lane.LR}
+
+		xero.ease{39.65,0.5,bounce,-0.5,ModNames.TansitionTable.Lane.LL}
+		xero.ease{39.75,0.5,bounce,0.5,ModNames.TansitionTable.Lane.LR}
+
 		--xero.ease{47.85,2,outSine,0,"idk"} -- pixel version ???
 
-		xero.ease{36.77,0.25,bounce,0.5,ModNames.TansitionTable.Side.LS}
-		xero.ease{37.25,0.25,bounce,0.5,ModNames.TansitionTable.Side.RS}
+		--xero.ease{49.65,1,inOutBounce,.75,ModNames.TansitionTable.Side.BH}
 
-		xero.ease{38.88,0.25,flip(bounce),0.25,ModNames.TansitionTable.Side.BH}
-		xero.ease{39.14,0.1,flip(bounce),0.5,ModNames.TansitionTable.Side.BH}
-		xero.ease{39.25,0.1,flip(bounce),0.75,ModNames.TansitionTable.Side.BH}
-		xero.ease{39.35,0.5,flip(bounce),0,ModNames.TansitionTable.Side.BH}
+		--xero.ease{56.48,1,outSine,.5,ModNames.TansitionTable.Side.BH}
+		xero.ease{56.48,1,linear,{5,1},"xspeedP"}
+		--xero.ease{56.48,1,outSine,20,"CH:MSplit"} -- make it spline arround OBJ
+		xero.ease{64.5,1,linear,{1,5},"xspeedP"}
+		--xero.ease{64.5,0.5,outSine,0.01,"CH:MSplit"}
 
-		xero.ease{49.65,0.5,bounce,0.75,ModNames.TansitionTable.Side.BH}
 
 		xero.ease{113,0,instant,100,ModNames.TansitionTable.Side.BH}
 
@@ -239,9 +282,11 @@ dofile(background.GetPath().."template/ease.lua")
 dofile(background.GetPath().."template/template.lua")
 
 local timbg = 0
+local newbgtm = 0
 
 function render_bg(deltaTime)
 	timbg = timbg + deltaTime
+	newbgtm = newbgtm + deltaTime
 
 	local counter = 0
 	local acounter = 0
@@ -250,6 +295,8 @@ function render_bg(deltaTime)
 	local state
 
 	background.DrawShader()
+
+	test1:Draw()
 	
 	local bpm = gameplay.bpm
 	barTimer, offSync, trackTimer = background.GetTiming()
@@ -270,11 +317,26 @@ function render_bg(deltaTime)
 
 	debuger(state,gTable.info,gTable.pos)
 
-	--mod.LaneHide(0)
-
 	timbg = timbg + impulse(background.GetBarTime()*2%1) * deltaTime * 10
 
+	newbgtm = newbgtm + impulse(background.GetBarTime()) * deltaTime * 10
+
 	background.SetParamf("LUAtimer", timbg)
+
+	test:SetParam("beat",background.GetBarTime()*2%1)
+	test:SetParam("ksegments",8.0)
+	test:SetParamVec4("color", 1.0, 1.0, 1.0, 0.5)
+	test:SetParamVec4("color1", 0.0, 0.0, 0.0, 0.5)
+	test:SetParamVec2("textureScale",1.0,1.0)
+	test:SetParam("numColors",2)
+	test:SetParam("bpm",bpm*0.01)
+	
+	--mod.LaneHide(bounce(background.GetBarTime()*4%1))
+
+	SetPipe(mdv.TP_PARAMS,mdv.MA_TRK,test)
+	SetPipe(mdv.TP_MATERIAL,mdv.MA_TRK,test)
+
+	--gfx.Text(gameplay.gauge.value or "",100,500)
 
 	for index, value in ipairs(TT) do
 		if beat >= value then
@@ -340,17 +402,6 @@ function render_bg(deltaTime)
 	gfx.FontSize(scalebase*0.4)
 	gfx.Text(mmaker,resx/2,(resy/2)+scalebase/4)
 	end
-	
-	gfx.Text(math.floor(timbg),100,200)
-	
-	local st = math.sin(trackTimer)*.5+.5
-	local sc = {st,st,1.}
-	local scaleMat = gfx.GetScaleMat(sc)
-	----mod.SetCamModMat(gfx.MultMat(m,gfx.GetInverse(scale)))
-	local matZoom = .5+.5*math.sin(beat)
-	--mod.SetCamModMat(scaleMat)
-	--gfx.SetNVGprojMat(gfx.GetScaleMat({0,0,0}))
-	gfx.SetNVGprojMat(gfx.GetIdentMat())
 
 	xero.update_command()
 	
