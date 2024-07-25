@@ -10,5 +10,5 @@ uniform vec4 color;
 
 void main()
 {
-	target = color;
+	target = vec4(1.);
 }
