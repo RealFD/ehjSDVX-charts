@@ -24,6 +24,7 @@ local shaderTable = {
 local test
 local test1
 local test2
+local test3
 
 local OBJ = require("shaders/test/model")
 local OBJ1 = require("shaders/test/model2")
@@ -196,6 +197,12 @@ function init()
 
 		test2:SetData(OBJ1)
 
+		test3 = gfx.CreateShadedMesh(shaderTable[7].naming,background.GetPath().."shaders"..shaderTable[7].path)
+		--test3:SetPrimitiveType(test3.PRIM_TRILIST)
+		--test3:SetBlendMode(test3.BLEND_ADD)
+		test3:AddTexture("Texture",background.GetPath().."shaders"..shaderTable[7].path.."texture.png")
+		test3:SetData(OBJ1)
+
 		for _, set in ipairs(setLaneMod) do
 			local value1, value2, labels = set[1], set[2], set[3]
 			for _, label in ipairs(labels) do
@@ -328,7 +335,9 @@ function render_bg(deltaTime)
 	SetPipe(mdv.TP_PARAMS,mdv.MA_TRK,test)
 	SetPipe(mdv.TP_MATERIAL,mdv.MA_TRK,test)
 
---	SetPipe(mdv.TP_MESH,mdv.MA_BT,test2)
+	SetPipe(mdv.TP_MESH,mdv.MA_BT,test3)
+	SetPipe(mdv.TP_MATERIAL,mdv.MA_BT,test3)
+	SetPipe(mdv.TP_PARAMS,mdv.MA_BT,test3)
 
 	--gfx.Text(gameplay.gauge.value or "",100,500)
 

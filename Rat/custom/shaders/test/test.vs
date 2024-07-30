@@ -16,7 +16,8 @@ uniform mat4 world;
 void main()
 {
     fsTex = inTex;
-    vec4 pos = vec4(inPos, 1.0);
+    vec4 pos = vec4(inPos*.05, 1.0);
+    pos.x += .06;
     pos = proj * camera * world * pos;
     gl_Position = pos;
 }
