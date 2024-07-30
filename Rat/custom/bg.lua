@@ -23,8 +23,10 @@ local shaderTable = {
 
 local test
 local test1
+local test2
 
 local OBJ = require("shaders/test/model")
+local OBJ1 = require("shaders/test/model2")
 
 --all shorts are found in this file
 dofile(background.GetPath().."template/vals.lua")
@@ -97,39 +99,6 @@ local setLaneMod = {
 	{20.50, 0, {ModNames.TansitionTable.Lane.A,ModNames.TansitionTable.Lane.B,ModNames.TansitionTable.Lane.C,ModNames.TansitionTable.Lane.D,ModNames.TansitionTable.Lane.LL,ModNames.TansitionTable.Lane.LR}},
 }
 
---somhow add color pulse length + chromatic
-
-local colorLibrary = {
-	start = {	
-		happy= {
-			bg    = {242/255,151/255,194/255},
-			stars = {241/255,180/255,71/255},
-			obj   = {
-				a = {230/255,140/255,174/255},
-				b = {122/255,180/255,210/255},
-				c = {242/255,196/255,96/255},
-				d = {251/255,237/255,142/255},
-				e = {249/255,246/255,233/255},
-			},
-		},
-		sad = {
-			bg    = {20/255,24/255,30/255},
-			stars = {248/255,47/255,67/255},
-			obj   = {
-				a = {40/255,49/255,56/255},
-				b = {12/255,13/255,16/255},
-				c = {15/255,15/255,21/255},
-				d = {53/255,41/255,64/255} -- on the split
-			},
-		},
-	}, -- till time 24.139
-	bgswitches = {
-		a = {231/255,134/255,174/255},
-		b = {251/255,198/255,81/255},
-	}
-}
-
---somehow make them sawp between the timer sceens
 
 
 local arttal = {1.0,1.19,1.38}  --arttextappear left
@@ -209,12 +178,23 @@ function init()
 		test:SetPrimitiveType(test.PRIM_TRIFAN)
 		test:SetBlendMode(test.BLEND_NORM)
 
-		test1 = gfx.CreateShadedMesh(shaderTable[7].naming,background.GetPath().."shaders"..shaderTable[7].path)
+		test1 = track.CreateShadedMeshOnTrack(shaderTable[7].naming,background.GetPath().."shaders"..shaderTable[7].path)
 
 		test1:SetPrimitiveType(test1.PRIM_TRILIST)
-		test1:SetBlendMode(test1.BLEND_NORM)
+		test1:SetBlendMode(test1.BLEND_ADD)
+
+		test1:AddTexture("Texture",background.GetPath().."shaders"..shaderTable[7].path.."texture.png")
 
 		test1:SetData(OBJ)
+
+		test2 = track.CreateShadedMeshOnTrack(shaderTable[7].naming,background.GetPath().."shaders"..shaderTable[7].path)
+
+		test2:SetPrimitiveType(test2.PRIM_TRILIST)
+		test2:SetBlendMode(test2.BLEND_ADD)
+
+		test2:AddTexture("Texture",background.GetPath().."shaders"..shaderTable[7].path.."texture.png")
+
+		test2:SetData(OBJ1)
 
 		for _, set in ipairs(setLaneMod) do
 			local value1, value2, labels = set[1], set[2], set[3]
@@ -281,18 +261,23 @@ dofile(background.GetPath().."template/sort.lua")
 dofile(background.GetPath().."template/ease.lua")
 dofile(background.GetPath().."template/template.lua")
 
-local timbg = 0
-local newbgtm = 0
+local timbg = 0.0
+local newbgtm = 0.0
+local move = 0.0
+local bouncebeat
 
 function render_bg(deltaTime)
 	timbg = timbg + deltaTime
 	newbgtm = newbgtm + deltaTime
+	move = move + deltaTime
 
 	local counter = 0
 	local acounter = 0
 	local bcounter = 0
 	local ccounter = 0
 	local state
+	
+
 
 	background.DrawShader()
 	
@@ -301,6 +286,10 @@ function render_bg(deltaTime)
 	local currBeat = background.GetBeat()
 	local beat = currBeat+background.GetBarTime()
 	gDeltaTime = deltaTime
+
+	bouncebeat = (bpm*gameplay.hispeed)
+	smol = bouncebeat/5.0
+	big = bouncebeat/10.0
 
 	local gTable = {
 		pos ={50,700},
@@ -328,11 +317,18 @@ function render_bg(deltaTime)
 	test:SetParamVec2("textureScale",1.0,1.0)
 	test:SetParam("numColors",2)
 	test:SetParam("bpm",bpm*0.01)
-	
+
+	test1:SetPosition(-2.0,2.0,0.0)
+	test1:SetScale(0.25,0.25,0.25)
+	test1:SetRotation((1.0+bounce(background.GetBarTime()*4%1))*big,(1.0+bounce(background.GetBarTime()*2%1))*smol,(1.0+move)*90.0)
+	--test1:SetRotation(0.0,0.0,0.0)
+
 	--mod.LaneHide(bounce(background.GetBarTime()*4%1))
 
 	SetPipe(mdv.TP_PARAMS,mdv.MA_TRK,test)
 	SetPipe(mdv.TP_MATERIAL,mdv.MA_TRK,test)
+
+--	SetPipe(mdv.TP_MESH,mdv.MA_BT,test2)
 
 	--gfx.Text(gameplay.gauge.value or "",100,500)
 
@@ -405,9 +401,6 @@ function render_bg(deltaTime)
 	
 end
 
-function render_fg()
-
-	test1:SetParamVec4("color", 1.0, 1.0, 1.0, 1.0)
-
+function render_ffg(deltaTime)
 	test1:Draw()
 end
