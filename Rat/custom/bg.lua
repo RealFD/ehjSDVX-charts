@@ -26,7 +26,7 @@ local test1
 local test2
 local test3
 
-local OBJ = require("shaders/test/model")
+local OBJ = require("shaders/modelgen/model")
 local OBJ1 = require("shaders/test/model2")
 
 --all shorts are found in this file
@@ -180,7 +180,7 @@ function init()
 		modelgen = track.CreateShadedMeshOnTrack("gen",background.GetPath().."shaders\\modelgen\\")
 
 		modelgen:SetPrimitiveType(modelgen.PRIM_TRILIST)
-		modelgen:SetBlendMode(modelgen.BLEND_NORM)
+		--modelgen:SetBlendMode(modelgen.BLEND_NORM)
 
 		modelgen:AddTexture("Texture",background.GetPath().."shaders\\modelgen\\texture.png")
 
