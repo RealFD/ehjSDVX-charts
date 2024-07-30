@@ -172,21 +172,19 @@ function init()
 
 		test = gfx.CreateShadedMesh(shaderTable[1].naming,background.GetPath().."shaders"..shaderTable[1].path)
 
-		--test:AddSkinTexture("myTexture", "track.png")
-
 		test:AddTexture("myTexture",background.GetPath().."shaders"..shaderTable[1].path.."track2.png")
 
 		test:SetPrimitiveType(test.PRIM_TRIFAN)
 		test:SetBlendMode(test.BLEND_NORM)
 
-		test1 = track.CreateShadedMeshOnTrack(shaderTable[7].naming,background.GetPath().."shaders"..shaderTable[7].path)
+		modelgen = track.CreateShadedMeshOnTrack("gen",background.GetPath().."shaders\\modelgen\\")
 
-		test1:SetPrimitiveType(test1.PRIM_TRILIST)
-		test1:SetBlendMode(test1.BLEND_ADD)
+		modelgen:SetPrimitiveType(modelgen.PRIM_TRILIST)
+		modelgen:SetBlendMode(modelgen.BLEND_NORM)
 
-		test1:AddTexture("Texture",background.GetPath().."shaders"..shaderTable[7].path.."texture.png")
+		modelgen:AddTexture("Texture",background.GetPath().."shaders\\modelgen\\texture.png")
 
-		test1:SetData(OBJ)
+		modelgen:SetData(OBJ)
 
 		test2 = track.CreateShadedMeshOnTrack(shaderTable[7].naming,background.GetPath().."shaders"..shaderTable[7].path)
 
@@ -273,6 +271,12 @@ local newbgtm = 0.0
 local move = 0.0
 local bouncebeat
 
+local some = {
+	1,0,0,
+	0,1,0,
+	0,0,1
+}
+
 function render_bg(deltaTime)
 	timbg = timbg + deltaTime
 	newbgtm = newbgtm + deltaTime
@@ -325,9 +329,9 @@ function render_bg(deltaTime)
 	test:SetParam("numColors",2)
 	test:SetParam("bpm",bpm*0.01)
 
-	test1:SetPosition(-2.0,2.0,0.0)
-	test1:SetScale(0.25,0.25,0.25)
-	test1:SetRotation((1.0+bounce(background.GetBarTime()*4%1))*big,(1.0+bounce(background.GetBarTime()*2%1))*smol,(1.0+move)*90.0)
+	modelgen:SetPosition(-2.0,2.0,0.0)
+	modelgen:SetScale(0.25,0.25,0.25)
+	modelgen:SetRotation((1.0+bounce(background.GetBarTime()*4%1))*big,(1.0+bounce(background.GetBarTime()*2%1))*smol,(1.0+move)*90.0)
 	--test1:SetRotation(0.0,0.0,0.0)
 
 	--mod.LaneHide(bounce(background.GetBarTime()*4%1))
@@ -411,5 +415,5 @@ function render_bg(deltaTime)
 end
 
 function render_ffg(deltaTime)
-	test1:Draw()
+	modelgen:Draw()
 end
