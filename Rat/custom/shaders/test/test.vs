@@ -34,8 +34,8 @@ mat3 rotationZ(float angle) {
 void main()
 {
     fsTex = inTex;
-    vec4 pos = vec4(inPos*.05, 1.0);
-    pos.x += .06;
+    vec4 pos = vec4(inPos*0.1, 1.0);
+    pos.x += .095;
 	
     pos = proj * camera * world * pos;
     gl_Position = pos;

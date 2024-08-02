@@ -22,12 +22,13 @@ local shaderTable = {
 }
 
 local test
-local test1
 local test2
 local test3
 
+local modelgen
+
 local OBJ = require("shaders/modelgen/model")
-local OBJ1 = require("shaders/test/model2")
+local OBJ1 = require("shaders/test/model")
 
 --all shorts are found in this file
 dofile(background.GetPath().."template/vals.lua")
@@ -147,7 +148,7 @@ end
 function init()
 		mod.setDepthTest(mdv.MA_LS,false)
 		mod.setDepthTest(mdv.MA_HLD,false)
-		mod.setDepthTest(mdv.MA_BT,false)
+		mod.setDepthTest(mdv.MA_BT,true)
 		--mod.setMQTrack(1)
 		--mod.setMQLaser(1)
 		--mod.setMQHold(1)
@@ -180,11 +181,12 @@ function init()
 		modelgen = track.CreateShadedMeshOnTrack("gen",background.GetPath().."shaders\\modelgen\\")
 
 		modelgen:SetPrimitiveType(modelgen.PRIM_TRILIST)
-		--modelgen:SetBlendMode(modelgen.BLEND_NORM)
 
 		modelgen:AddTexture("Texture",background.GetPath().."shaders\\modelgen\\texture.png")
 
 		modelgen:SetData(OBJ)
+
+		modelgen:SetDepthTest(true)
 
 		test2 = track.CreateShadedMeshOnTrack(shaderTable[7].naming,background.GetPath().."shaders"..shaderTable[7].path)
 
@@ -195,11 +197,14 @@ function init()
 
 		test2:SetData(OBJ1)
 
+
 		test3 = gfx.CreateShadedMesh(shaderTable[7].naming,background.GetPath().."shaders"..shaderTable[7].path)
 		--test3:SetPrimitiveType(test3.PRIM_TRILIST)
 		--test3:SetBlendMode(test3.BLEND_ADD)
 		test3:AddTexture("Texture",background.GetPath().."shaders"..shaderTable[7].path.."texture.png")
 		test3:SetData(OBJ1)
+
+		test3:SetDepthTest(true)
 
 		for _, set in ipairs(setLaneMod) do
 			local value1, value2, labels = set[1], set[2], set[3]
@@ -329,9 +334,10 @@ function render_bg(deltaTime)
 	test:SetParam("numColors",2)
 	test:SetParam("bpm",bpm*0.01)
 
-	modelgen:SetPosition(-2.0,2.0,0.0)
-	modelgen:SetScale(0.25,0.25,0.25)
-	modelgen:SetRotation((1.0+bounce(background.GetBarTime()*4%1))*big,(1.0+bounce(background.GetBarTime()*2%1))*smol,(1.0+move)*90.0)
+	modelgen:SetPosition(0.0,1.25,-1.0)
+	modelgen:SetScale(1.0,1.0,1.0)
+	--modelgen:SetRotation((1.0+bounce(background.GetBarTime()*4%1))*big,(1.0+bounce(background.GetBarTime()*2%1))*smol,(1.0+move)*90.0)
+	modelgen:SetRotation((90.0*move)+0.0,0.0,0.0)
 	--test1:SetRotation(0.0,0.0,0.0)
 
 	--mod.LaneHide(bounce(background.GetBarTime()*4%1))
@@ -415,5 +421,5 @@ function render_bg(deltaTime)
 end
 
 function render_ffg(deltaTime)
-	modelgen:Draw()
+	--modelgen:Draw()
 end

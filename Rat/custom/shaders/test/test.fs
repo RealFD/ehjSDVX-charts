@@ -4,9 +4,12 @@ layout(location=1) in vec2 fsTex;
 layout(location=0) out vec4 target;
 
 uniform sampler2D Texture;
+uniform int uIndex;
 
 void main()
 {
+    vec4 fresnelColor = vec4(1.0,1.0,1.0,1.0);
+    if (uIndex == 1){
     // Sample the texture
     vec4 texColor = texture(Texture, fsTex);
 
@@ -15,7 +18,11 @@ void main()
     float fresnelFactor = pow(1.0 - dot(normalize(vec3(fsTex * 2.0 - 1.0, 1.0)), vec3(0.0, 0.0, 1.0)), 3.0) * 0.5 + 0.5;
 
     // Apply the Fresnel effect
-    vec4 fresnelColor = texColor * vec4(fresnelFactor, fresnelFactor, fresnelFactor, 1.0);
+        fresnelColor = texColor * vec4(fresnelFactor, fresnelFactor, fresnelFactor, 1.0);
+    }
+   if (uIndex == 2){
+        fresnelColor = vec4(1.0,1.0,1.0,1.0);
+   }
 
     target = fresnelColor;
 }
