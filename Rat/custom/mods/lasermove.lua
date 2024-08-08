@@ -30,7 +30,7 @@ ModProp(LaserR,LaserAF)
 
 
 
-xero.definemod {"LaserSetWaveX", function (p)
+xero.definemod {"LaserSetWaveXB", "LaserSetWaveX", function (b,p)
     local val = p
     SplineType(SpCordX)
     SetMod("L1")
@@ -57,8 +57,9 @@ xero.definemod {"LaserSetWaveX", function (p)
     end
 end}
 xero.setdefault{0, "LaserSetWaveX"}
+xero.linkmod{"LaserSetWaveXB",{"L1","R1"}}
 
-xero.definemod {"LaserSetWaveY", function (p)
+xero.definemod {"LaserSetWaveYB","LaserSetWaveY", function (b,p)
     local val = p
     SplineType(SpCordZ)
     SetMod("L2")
@@ -85,4 +86,4 @@ xero.definemod {"LaserSetWaveY", function (p)
     end
 end}
 xero.setdefault{0, "LaserSetWaveY"}
-
+xero.linkmod{"LaserSetWaveYB",{"L2","R2"}}

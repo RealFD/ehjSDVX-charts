@@ -143,29 +143,6 @@ local TT = {
 	0.5,0.75,1.5,2.5,4.0
 }
 
-local setLaneMod = {
-    {19.25, 1000, {ModNames.TansitionTable.Lane.A, ModNames.TansitionTable.Lane.B, ModNames.TansitionTable.Lane.C, ModNames.TansitionTable.Lane.D, ModNames.TansitionTable.Lane.LL, ModNames.TansitionTable.Lane.LR}},
-    {19.50, 0, {ModNames.TansitionTable.Lane.A}},
-	{19.55, 1000, {ModNames.TansitionTable.Lane.A}},
-    {19.60, 0, {ModNames.TansitionTable.Lane.B}},
-	{19.65, 1000, {ModNames.TansitionTable.Lane.B}},
-    {19.75, 0, {ModNames.TansitionTable.Lane.C}},
-	{19.80, 1000, {ModNames.TansitionTable.Lane.C}},
-	{19.85, 0, {ModNames.TansitionTable.Lane.A}},
-	{19.90, 1000, {ModNames.TansitionTable.Lane.A}},
-	{20.0, 0, {ModNames.TansitionTable.Lane.A}},
-	{20.05, 1000, {ModNames.TansitionTable.Lane.A}},
-    {20.06, 0, {ModNames.TansitionTable.Lane.B}},
-	{20.11, 1000, {ModNames.TansitionTable.Lane.B}},
-    {20.12, 0, {ModNames.TansitionTable.Lane.C}},
-	{20.17, 1000, {ModNames.TansitionTable.Lane.C}},
-	{20.19, 0, {ModNames.TansitionTable.Lane.D}},
-	{20.22, 1000, {ModNames.TansitionTable.Lane.D}},
-	{20.50, 0, {ModNames.TansitionTable.Lane.A,ModNames.TansitionTable.Lane.B,ModNames.TansitionTable.Lane.C,ModNames.TansitionTable.Lane.D,ModNames.TansitionTable.Lane.LL,ModNames.TansitionTable.Lane.LR}},
-}
-
-
-
 local arttal = {1.0,1.19,1.38}  --arttextappear left
 local arttar = {2.0,2.19,2.38}  --arttextappear right
 local modmaker = {3.0,3.19,3.38}
@@ -222,17 +199,17 @@ function init()
 		xero.plr = 1
 		dofile(background.GetPath().."defMods.lua")
 
-		loadMod("setspeed")
-		loadMod("rotate")
-		loadMod("lanes")
+		--loadMod("setspeed")
+		--loadMod("rotate")
+		--loadMod("lanes")
 		loadMod("lasermove")
-		loadMod("buttonsmove")
-		loadMod("side")
-		loadMod("Highway")
-		loadMod("change")
+		--loadMod("buttonsmove")
+		--loadMod("side")
+		--loadMod("Highway")
+		--loadMod("change")
 
-		xero.setdefault{0.01,"BTA_M"}
-		xero.setdefault{0.01,"BTB_M"}
+		--xero.setdefault{0.01,"BTA_M"}
+		--xero.setdefault{0.01,"BTB_M"}
 
 		TrackSH = CreateShader("track", GameplayTable, 1, "track2.png",nil,false, PRIM_TRIFAN, BLEND_NORM)
 
@@ -250,59 +227,7 @@ function init()
 
 		modelgen:SetDepthTest(true)
 
-
-		for _, set in ipairs(setLaneMod) do
-			local value1, value2, labels = set[1], set[2], set[3]
-			for _, label in ipairs(labels) do
-				xero.set{value1, value2, label}
-			end
-		end
-
-		xero.ease{4,100,outElastic,math.pi/2,ModNames.RotationTable.Side.BH}
-		xero.set{5,100,ModNames.RotationTable.Side.BH}
-		xero.ease{113.25,2,spike,0,ModNames.RotationTable.Side.BH}
-
-		xero.ease{6,1,flip(linear),0.5,ModNames.TansitionTable.Side.LS}
-		xero.ease{8.2,1,flip(linear),0.5,ModNames.TansitionTable.Side.RS}
-		xero.ease{6,1,flip(linear),1,ModNames.RotationTable.Side.LS}
-		xero.ease{8.2,1,flip(linear),1,ModNames.RotationTable.Side.RS}
-
-		xero.ease{79,1,linear,25,"CH:Z"}
-		xero.ease{90,1,linear,0.1,"CH:Z"}
-
-		xero.ease{4,0.5,outSine,{1,1},"Modify"}
-
-		xero.ease{10,0.5,linear,{1,2},"Modify"}
-
-		xero.ease{28.5,0.5,outSine,{1,1},"Modify"}
-
-		xero.ease{28.5,1,linear,{0.25,5},"xspeedP"}
-
-		xero.ease{109.5,1.3,bounce,1,"LaserSetWaveX"}
-		xero.ease{110,75,instant,0,"LaserSetWaveX"}
-		xero.ease{109.5,1.3,bounce,1,"LaserSetWaveY"}
-		xero.ease{110,75,instant,0,"LaserSetWaveY"}
-
-		xero.ease{109.5,1.5,bounce,.5,ModNames.TansitionTable.Side.BH}
-
-		xero.ease{36.75,0.5,bounce,-0.5,ModNames.TansitionTable.Lane.LL}
-		xero.ease{37.25,0.5,bounce,0.5,ModNames.TansitionTable.Lane.LR}
-
-		xero.ease{39.65,0.5,bounce,-0.5,ModNames.TansitionTable.Lane.LL}
-		xero.ease{39.75,0.5,bounce,0.5,ModNames.TansitionTable.Lane.LR}
-
-		--xero.ease{47.85,2,outSine,0,"idk"} -- pixel version ???
-
-		--xero.ease{49.65,1,inOutBounce,.75,ModNames.TansitionTable.Side.BH}
-
-		--xero.ease{56.48,1,outSine,.5,ModNames.TansitionTable.Side.BH}
-		xero.ease{56.48,1,linear,{5,1},"xspeedP"}
-		--xero.ease{56.48,1,outSine,20,"CH:MSplit"} -- make it spline arround OBJ
-		xero.ease{64.5,1,linear,{1,5},"xspeedP"}
-		--xero.ease{64.5,0.5,outSine,0.01,"CH:MSplit"}
-
-
-		xero.ease{113,0,instant,100,ModNames.TansitionTable.Side.BH}
+		dofile(background.GetPath().."mods"..".lua")
 
 		xero.init_command()
 end
@@ -468,4 +393,8 @@ end
 
 function render_ffg(deltaTime)
 	modelgen:Draw()
+	if gameplay.practice_setup ~= nil then
+		gfx.ForceRender()
+		xero.printmods{}
+	end
 end

@@ -178,8 +178,10 @@ local function ease(self)
 
 	-- convert the start beat into time and store it in start_time
 	--TODOs convert time to beat.
-	self.start_time = self.time and self[1] or background.GetTimeByBeat(self[1]) -- or trackTimer--song:GetElapsedTimeFromBeat(self[1])
+	--self.start_time = self.time and self[1] or background.GetTimeByBeat(self[1]) -- or trackTimer--song:GetElapsedTimeFromBeat(self[1])
 
+	self.start_time = self[1]
+	self.end_time = self[2]
 	-- future steps assume that plr is a number, so if it's a table,
 	-- we need to duplicate the entry once for each player number
 	-- The table is then stored into `eases` for later
@@ -309,7 +311,9 @@ local function func(self)
 		end
 	end
 	self.priority = (self.defer and -1 or 1) * (#funcs + 1)
-	self.start_time = self.time and self[1] or background.GetTimeByBeat(self[1]) --song:GetElapsedTimeFromBeat(self[1])
+	--self.start_time = self.time and self[1] or background.GetTimeByBeat(self[1]) --song:GetElapsedTimeFromBeat(self[1])
+	self.start_time = self[1]
+	self.end_time = nil
 	table.insert(funcs, self)
 end
 
@@ -318,6 +322,35 @@ local disallowed_poptions_perframe_persist = setmetatable({}, {
 		error('you cannot use poptions and persist at the same time. </3')
 	end,
 })
+
+--TODO(skade)
+--TODO(skade) export function + param error handling
+-- {definemod_name,{link1,link2,...}}
+-- ehjMods liked to definemod get disabled when not in perframe
+local function linkmod(self)
+	--TODO insert func before and after perframe which toggles enables all listed mods on begin and end
+	-- automatically disable mods
+
+	-- find node with self.dmParams[1] == self[1]
+	--TODO(skade) throw error node not found
+	local node = nil
+	for i,v in pairs(nodes) do
+		if self[1] == v[1][1] then
+			node = v
+			break
+		end
+	end
+
+	if node then
+		for i,v in pairs(self[2]) do
+			mod.setEMod(v)
+			mod.setModEnable(false)
+		end
+
+		-- add structure so that self.linkm = self[2]
+		node.linkm = self[2]
+	end
+end
 
 -- func helper for scheduling a perframe
 local function perframe(self, deny_poptions)
@@ -332,11 +365,12 @@ local function perframe(self, deny_poptions)
 		end
 	end
 	self.priority = (self.defer and -1 or 1) * (#funcs + 1)
-	self.start_time = self.time and self[1] or background.GetTimeByBeat(self[1]) --song:GetElapsedTimeFromBeat(self[1])
-
+	--self.start_time = self.time and self[1] or background.GetTimeByBeat(self[1]) --song:GetElapsedTimeFromBeat(self[1])
+	self.start_time = self[1]
+	self.end_time = self[2]
+	local node = nil
 	if type(self[3]) == 'string' then
 		-- Find node which contains function
-		local node = nil
 		local brk = false
 		for _,n in ipairs(nodes) do
 			for _,name in ipairs(n[1]) do
@@ -355,7 +389,10 @@ local function perframe(self, deny_poptions)
 		if node ~= nil then
 			-- Fetch function from node and add to funcs.
 			--game.Print("Node added with name: "..node[1][1])
-			self.defmodn = self[3]
+			self.dmParams = node[1]
+			--for i,d in ipairs(self.dmParams) do
+			--	game.Print(tostring(i)..": "..tostring(d))
+			--end
 			self[3] = node[3]
 			-- mark as defmod
 		end
@@ -369,10 +406,38 @@ local function perframe(self, deny_poptions)
 		func {
 			self[1] + self[2],
 			function()
-				self[3](background.GetBeat(), disallowed_poptions_perframe_persist)
+				self[3](background.GetBeat()+background.GetBarTime(), disallowed_poptions_perframe_persist)
 			end,
 			persist = persist,
 		}
+	end
+
+	--TODO(skade)
+	if node and node.linkm then
+		--game.Print("self.linkm: "..tostring(v))
+		--for i,v in pairs(node.linkm) do
+		--	game.Print("self.linkm "..tostring(i)..": "..tostring(v))
+		--end
+		func {
+			self[1],
+			function()
+				for i,v in pairs(node.linkm) do
+					mod.setEMod(v)
+					mod.setModEnable(true)
+				end
+			end,
+		}
+		if self.keepac == nil or self.keepac == false then
+			func {
+				self[1]+self[2],
+				function()
+					for i,v in pairs(node.linkm) do
+						mod.setEMod(v)
+						mod.setModEnable(false)
+					end
+				end,
+			}
+		end
 	end
 
 	table.insert(funcs, self)
@@ -686,7 +751,17 @@ local function sort_tables()
 	-- it's a stable sort, so other ties are broken based on insertion order
 	stable_sort(eases, function(a, b)
 		if a.start_time == b.start_time then
-			return a.reset and not b.reset
+			--TODO(skade)
+			if a.end_time == nil and b.end_time == nil then
+				return a.reset and not b.reset
+			end
+			if a.end_time == nil then
+				return true
+			end
+			if b.end_time == nil then
+				return false
+			end
+			return a.end_time < b.end_time
 		else
 			return a.start_time < b.start_time
 		end
@@ -697,8 +772,18 @@ local function sort_tables()
 	-- in which case the priority will be negative
 	stable_sort(funcs, function(a, b)
 		if a.start_time == b.start_time then
-			local x, y = a.priority, b.priority
-			return x * x * y < x * y * y
+			--TODO(skade)
+			if a.end_time == nil and b.end_time == nil then
+				local x, y = a.priority, b.priority
+				return x * x * y < x * y * y
+			end
+			if a.end_time == nil then
+				return true
+			end
+			if b.end_time == nil then
+				return false
+			end
+			return a.end_time < b.end_time
 		else
 			return a.start_time < b.start_time
 		end
@@ -876,6 +961,11 @@ local function compile_nodes()
 			code(', pn)\n')
 		end
 		code('end\n')('end\n')
+
+		--local codeString = code:build()
+		--game.Print("codeString: ")
+		--game.Print(codeString)
+		--game.Print("codeString end")
 
 		-- compiles new function which can be called.
 		local compiled = assert(load(code:build(), 'node_generated'))()
@@ -1059,8 +1149,44 @@ local funcs_index = 1
 local active_funcs = perframe_data_structure(function(a, b)
 	local x, y = a.priority, b.priority
 	return x * x * y < x * y * y
+	--if a.end_time == nil and b.end_time == nil then
+	--	local x, y = a.priority, b.priority
+	--	return x * x * y < x * y * y
+	--end
+	--if a.end_time == nil then
+	--	return true
+	--end
+	--if b.end_time == nil then
+	--	return false
+	--end
+	--return a.end_time < b.end_time
 end)
+local ehjCurrentMods = {}
+local function printmods(self)
+	local printIdx = 0
+	for _, m in pairs(ehjCurrentMods) do
+		local e = m[1]
+		gfx.Text(e.dmParams[1],25,300+printIdx*10)
+		printIdx = printIdx+1
+		for emn = 2,#e.dmParams do
+			local percent = m[e.dmParams[emn]]
+			gfx.Text(string.format("%.3f%% %s",percent,e.dmParams[emn]),50,300+printIdx*10)
+			printIdx = printIdx+1
+		end
+	end
+end
 local function run_funcs(beat, time)
+	--TODO(skade) mute
+	--if not printFuncs then
+	--	for j,w in ipairs(funcs) do
+	--		game.Print("PRINTING TABLE NUM: "..tostring(j))
+	--		for i,v in ipairs(w) do
+	--			game.Print(tostring(i)..": "..tostring(v))
+	--		end
+	--		game.Print("")
+	--	end
+	--	printFuncs = true
+	--end
 	while funcs_index <= #funcs do
 		local e = funcs[funcs_index]
 		local measure = e.time and time or beat
@@ -1069,8 +1195,15 @@ local function run_funcs(beat, time)
 		end
 		if not e[2] then
 			--TODOs f determine which player to take instead of 1
-			if e.defmodn ~= "" then
-				e[3](mods[1][e.defmodn])
+			if e.dmParams and #e.dmParams > 0 then
+				--TODOs f determine which player to take instead of 1
+				local params = {}
+				for i=1,#e.dmParams do
+					params[i] = mods[1][e.dmParams[i]]
+				end
+				-- remove first element
+				table.remove(params,1)
+				e[3](beat,table.unpack(params)) --TODOs measure instead of beat?
 			else
 				e[3](measure)
 			end
@@ -1080,6 +1213,17 @@ local function run_funcs(beat, time)
 		funcs_index = funcs_index + 1
 	end
 
+	--TODO(skade) remove
+	----print mods
+	--for pn = 1,max_pn do
+	--	local i = 0
+	--	for mod, percent in pairs(mods[pn]) do
+	--		gfx.Text(mod.." "..tostring(math.floor(percent*1000)/1000).."%",100,300+i*10)
+	--		i = i+1
+	--	end
+	--end
+
+	ehjCurrentMods = {}
 	while true do
 		local e = active_funcs:next()
 		if not e then
@@ -1088,9 +1232,22 @@ local function run_funcs(beat, time)
 		local measure = e.time and time or beat
 		if measure < e[1] + e[2] then
 			poptions_logging_target = e.mods
-			if e.defmodn ~= "" then
-				--TODOs f determine which play to take instead of 1
-				e[3](mods[1][e.defmodn],poptions)
+			if e.dmParams and #e.dmParams > 0 then
+				--TODOs f determine which player to take instead of 1
+				local params = {}
+				for i=1,#e.dmParams do
+					params[i] = mods[1][e.dmParams[i]]
+				end
+				-- remove first element
+				table.remove(params,1)
+				e[3](beat,table.unpack(params))
+
+				local m = {e}
+				for emn = 2,#e.dmParams do
+					local percent = mods[1][e.dmParams[emn]]
+					m[e.dmParams[emn]] = percent
+				end
+				table.insert(ehjCurrentMods,m)
 			else
 				e[3](measure, poptions)
 			end
@@ -1147,10 +1304,12 @@ local function run_nodes()
 		end
 		for _ = 1, #active_nodes do
 			-- run all the nodes
-			table.remove(active_nodes)[6](pn)
+			--TODOs make sure ideally call node of define mod only once, even when multiple eases are active at single mod
+			table.remove(active_nodes)--[6](pn)
 		end
 		for _ = 1, #active_terminators do
 			-- run all the nodes marked as 'terminator'
+			--TODOs remove call?
 			table.remove(active_terminators)[6](pn)
 		end
 		--else --TODOs multiple playfields
@@ -1171,6 +1330,7 @@ local function run_mods()
 		--if P[pn] and P[pn]:IsAwake() then -- always awake
 		local buffer = mod_buffer[pn]
 		-- toss everything that isn't an aux into the buffer
+
 		for mod, percent in pairs(mods[pn]) do
 			if not auxes[mod] then
 				buffer[#buffer + 1] = '*-1 ' .. percent .. ' ' .. mod
@@ -1189,6 +1349,8 @@ local function run_mods()
 end
 
 -- this if statement won't run unless you are mirin
+--TODOs
+debug_print_mod_targets=false
 if debug_print_mod_targets then
 	-- luacov: disable
 	func {
@@ -1198,7 +1360,7 @@ if debug_print_mod_targets then
 			if debug_print_mod_targets == true or debug_print_mod_targets < beat then
 				--TODO multiple playfields
 				for pn = 1, max_pn do
-					if P[pn] and P[pn]:IsAwake() then
+					--if P[pn] and P[pn]:IsAwake() then
 						local outputs = {}
 						local i = 0
 						for k, v in pairs(targets[pn]) do
@@ -1208,9 +1370,9 @@ if debug_print_mod_targets then
 							end
 						end
 						game.Print('Player ' .. pn .. ' at beat ' .. beat .. ' --> ' .. table.concat(outputs, ', '))
-					else
-						game.Print('Player ' .. pn .. ' is asleep or missing')
-					end
+					--else
+					--	game.Print('Player ' .. pn .. ' is asleep or missing')
+					--end
 				end
 				debug_print_mod_targets = (debug_print_mod_targets == true)
 			end
@@ -1254,6 +1416,8 @@ local function ready_command(self)
 end
 
 local update_finished_successfully = true
+local last_time = background.GetTime()
+
 function xero.update_command(self)
 	-- guard logic so that if the template crashes,
 	-- we don't spam the user with error messages
@@ -1263,6 +1427,15 @@ function xero.update_command(self)
 		--local time = self:GetSecsIntoEffect()
 		local time = background.GetTime()
 		local beat = background.GetBeat()+background.GetBarTime() --TODOs offset seems wrong
+
+		-- dont update mods on jumpback
+		if gameplay.practice_setup ~= nil then --TODO(skade) this shouldnt be needed
+			if time < last_time then
+				--init_command() --TODO(skade) auto reset without having to reload?
+				return
+			end
+			last_time = time
+		end
 
 		run_eases(beat, time)
 		run_funcs(beat, time)
@@ -1583,6 +1756,27 @@ local function check_node_errors(self, name)
 	end
 end
 
+--TODO(skade)
+local function check_linkmod_errors(self,name)
+	if type(self) ~= 'table' then
+		return 'curly braces expected'
+	end
+	if type(self[1]) ~= 'string' then
+		return 'first parameter string (definemod name) expected'
+	end
+	if type(self[2]) ~= 'table' then
+		return 'second parameter table (ehjMod names) expected'
+	end
+	for i = 1, #self[2] do
+		if type(self[2][i]) ~= 'string' then
+			return 'ehjMod names expected string on index:'..tostring(i)..'ignoring value'
+		end
+	end
+end
+
+--TODO(skade)
+local function check_printmods_errors(self,name)
+end
 -- ===================================================================== --
 
 -- Exports
@@ -1615,6 +1809,8 @@ export(setdefault, check_setdefault_errors, 'set_default')
 export(aux, check_aux_errrors, 'aux')
 export(node, check_node_errors, 'node')
 export(definemod, check_node_errors, 'define_mod')
+export(linkmod, check_linkmod_errors, 'link_mod')
+export(printmods, check_printmods_errors, 'print_mods')
 xero.get_plr = get_plr
 xero.touch_mod = touch_mod
 xero.touch_all_mods = touch_all_mods
@@ -1661,6 +1857,7 @@ xero(_ENV)
 
 -- UNDOCUMENTED
 xero.mod_buffer = mod_buffer
+xero.mods = mods
 
 --TODOs useless?
 --function xero.aftsprite(aft, sprite)

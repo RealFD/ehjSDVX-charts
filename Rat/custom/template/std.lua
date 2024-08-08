@@ -91,7 +91,7 @@ xero.strict = setmetatable({}, {
 	__index = _G,
 	-- Prevent creating any variable
 	__newindex = function(_self, t)
-		game.Print(debug.traceback())
+		--TODOs game.Print(debug.traceback())
 		error(t)
 	end,
 })
