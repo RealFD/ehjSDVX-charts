@@ -11,27 +11,90 @@ end
 
 resx, resy = game.GetResolution()
 
-local shaderTable = {
+BGPath = background.GetPath()
+
+local ModelTable = {
+	{naming="gen",path="\\modelgen\\"},
+}
+
+local GameplayTable = {
 	{naming="track",path="\\track\\"},
+	{naming="button",path="\\button\\"},
+	{naming="laser",path="\\laser\\"},
+}
+
+local ShaderTable = {
 	{naming="grid",path="\\grid\\"},
 	{naming="kaleidoscope",path="\\kaleidoscope\\"},
 	{naming="pulse",path="\\pulse\\"},
 	{naming="posturize",path="\\posturize\\"},
 	{naming="spin",path="\\spin\\"},
-	{naming="test",path="\\test\\"},
 }
 
-local test
-local test2
-local test3
+local TrackSH
+local LaserSH
+local ButtonSH
 
 local modelgen
 
-local OBJ = require("shaders/modelgen/model")
-local OBJ1 = require("shaders/test/model")
+local ObjectTable = {
+	OBJ = "models/special/ellenjoe",
+	Button = "models/Buttons/model",
+	Laser = "models/Lasers/Laser"
+}
+
+local function validate_require(module_name)
+    local success, result = pcall(require, module_name)
+    if success then
+        game.Print("Module '" .. module_name .. "' loaded successfully.")
+        return result
+    else
+        game.Print("Error loading module '" .. module_name .. "': " .. result)
+        return nil
+    end
+end
+
+local OBJ = validate_require(ObjectTable.OBJ)
+local Button = validate_require(ObjectTable.Button)
+local Laser = validate_require(ObjectTable.Laser)
 
 --all shorts are found in this file
-dofile(background.GetPath().."template/vals.lua")
+dofile(BGPath.."template/vals.lua")
+
+local function SetPipeLine(type,Shader)
+	SetPipe(mdv.TP_MESH,type,Shader)
+	SetPipe(mdv.TP_MATERIAL,type,Shader)
+	SetPipe(mdv.TP_PARAMS,type,Shader)
+end
+
+local function CreateShader(shaderName, table, index, textureFileName, data, hasDepth, primitiveType, blendMode)
+    local shaderInfo = table[index]
+    local shaderPath = BGPath .. "shaders" .. shaderInfo.path
+
+    shaderName = gfx.CreateShadedMesh(shaderName, shaderPath)
+	if textureFileName then
+    shaderName:AddTexture("myTexture", shaderPath .. textureFileName)
+	end
+	
+	if data then
+		shaderName:SetData(data)
+	end
+
+    if primitiveType then
+        shaderName:SetPrimitiveType(shaderName.primitiveType)
+    end
+
+    if blendMode then
+        shaderName:SetBlendMode(shaderName.blendMode)
+    end
+
+	if hasDepth then
+	shaderName:SetDepthTest(hasDepth)
+	end
+
+    return shaderName
+end
+
 
 local function split_by_length(str, length)
     local result = {}
@@ -148,7 +211,7 @@ end
 function init()
 		mod.setDepthTest(mdv.MA_LS,false)
 		mod.setDepthTest(mdv.MA_HLD,false)
-		mod.setDepthTest(mdv.MA_BT,true)
+		mod.setDepthTest(mdv.MA_BT,false)
 		--mod.setMQTrack(1)
 		--mod.setMQLaser(1)
 		--mod.setMQHold(1)
@@ -171,12 +234,11 @@ function init()
 		xero.setdefault{0.01,"BTA_M"}
 		xero.setdefault{0.01,"BTB_M"}
 
-		test = gfx.CreateShadedMesh(shaderTable[1].naming,background.GetPath().."shaders"..shaderTable[1].path)
+		TrackSH = CreateShader("track", GameplayTable, 1, "track2.png",nil,false, PRIM_TRIFAN, BLEND_NORM)
 
-		test:AddTexture("myTexture",background.GetPath().."shaders"..shaderTable[1].path.."track2.png")
+		ButtonSH = CreateShader("button",GameplayTable,2,nil,Button,true,nil,nil)
 
-		test:SetPrimitiveType(test.PRIM_TRIFAN)
-		test:SetBlendMode(test.BLEND_NORM)
+		LaserSH = CreateShader("laser",GameplayTable,3,nil,Laser,false,nil, nil)
 
 		modelgen = track.CreateShadedMeshOnTrack("gen",background.GetPath().."shaders\\modelgen\\")
 
@@ -184,27 +246,10 @@ function init()
 
 		modelgen:AddTexture("Texture",background.GetPath().."shaders\\modelgen\\texture.png")
 
-		modelgen:SetData(OBJ)
+		modelgen:SetData(Button)
 
 		modelgen:SetDepthTest(true)
 
-		test2 = track.CreateShadedMeshOnTrack(shaderTable[7].naming,background.GetPath().."shaders"..shaderTable[7].path)
-
-		test2:SetPrimitiveType(test2.PRIM_TRILIST)
-		test2:SetBlendMode(test2.BLEND_ADD)
-
-		test2:AddTexture("Texture",background.GetPath().."shaders"..shaderTable[7].path.."texture.png")
-
-		test2:SetData(OBJ1)
-
-
-		test3 = gfx.CreateShadedMesh(shaderTable[7].naming,background.GetPath().."shaders"..shaderTable[7].path)
-		--test3:SetPrimitiveType(test3.PRIM_TRILIST)
-		--test3:SetBlendMode(test3.BLEND_ADD)
-		test3:AddTexture("Texture",background.GetPath().."shaders"..shaderTable[7].path.."texture.png")
-		test3:SetData(OBJ1)
-
-		test3:SetDepthTest(true)
 
 		for _, set in ipairs(setLaneMod) do
 			local value1, value2, labels = set[1], set[2], set[3]
@@ -227,7 +272,7 @@ function init()
 
 		xero.ease{4,0.5,outSine,{1,1},"Modify"}
 
-		xero.ease{10,0.5,linear,{1,10},"Modify"}
+		xero.ease{10,0.5,linear,{1,2},"Modify"}
 
 		xero.ease{28.5,0.5,outSine,{1,1},"Modify"}
 
@@ -276,26 +321,22 @@ local newbgtm = 0.0
 local move = 0.0
 local bouncebeat
 
-local some = {
-	1,0,0,
-	0,1,0,
-	0,0,1
-}
-
 function render_bg(deltaTime)
 	timbg = timbg + deltaTime
 	newbgtm = newbgtm + deltaTime
 	move = move + deltaTime
+
+	local r,b,g = game.GetLaserColor(0)
+	local r1,b1,g1 = game.GetLaserColor(1)
+
+	tr,tg,tb = r/255,g/255,b/255
+	tr1,tg1,tb1 = r1/255,g1/255,b1/255
 
 	local counter = 0
 	local acounter = 0
 	local bcounter = 0
 	local ccounter = 0
 	local state
-	
-
-
-	background.DrawShader()
 	
 	local bpm = gameplay.bpm
 	barTimer, offSync, trackTimer = background.GetTiming()
@@ -324,32 +365,37 @@ function render_bg(deltaTime)
 
 	newbgtm = newbgtm + impulse(background.GetBarTime()) * deltaTime * 10
 
-	background.SetParamf("LUAtimer", timbg)
+	--background.SetParamf("LUAtimer", timbg)
 
-	test:SetParam("beat",background.GetBarTime()*2%1)
-	test:SetParam("ksegments",8.0)
-	test:SetParamVec4("color", 1.0, 1.0, 1.0, 0.5)
-	test:SetParamVec4("color1", 0.0, 0.0, 0.0, 0.5)
-	test:SetParamVec2("textureScale",1.0,1.0)
-	test:SetParam("numColors",2)
-	test:SetParam("bpm",bpm*0.01)
+	TrackSH:SetParam("beat",background.GetBarTime()*2%1)
+	TrackSH:SetParam("ksegments",8.0)
+	TrackSH:SetParamVec4("color", 1.0, 1.0, 1.0, 0.5)
+	TrackSH:SetParamVec4("color1", 0.0, 0.0, 0.0, 0.5)
+	TrackSH:SetParamVec2("textureScale",1.0,1.0)
+	TrackSH:SetParam("numColors",2)
+	TrackSH:SetParam("bpm",bpm*0.01)
 
-	modelgen:SetPosition(0.0,1.25,-1.0)
+	LaserSH:SetParamVec3("colorL",r/255,b/255,g/255)
+	LaserSH:SetParamVec3("colorR",r1/255,b1/255,g1/255)
+
+	modelgen:SetPosition(0.0,1.25,1)
 	modelgen:SetScale(1.0,1.0,1.0)
 	--modelgen:SetRotation((1.0+bounce(background.GetBarTime()*4%1))*big,(1.0+bounce(background.GetBarTime()*2%1))*smol,(1.0+move)*90.0)
 	modelgen:SetRotation((90.0*move)+0.0,0.0,0.0)
-	--test1:SetRotation(0.0,0.0,0.0)
 
 	--mod.LaneHide(bounce(background.GetBarTime()*4%1))
 
-	SetPipe(mdv.TP_PARAMS,mdv.MA_TRK,test)
-	SetPipe(mdv.TP_MATERIAL,mdv.MA_TRK,test)
+	SetPipeLine(mdv.MA_TRK,TrackSH)
 
-	SetPipe(mdv.TP_MESH,mdv.MA_BT,test3)
-	SetPipe(mdv.TP_MATERIAL,mdv.MA_BT,test3)
-	SetPipe(mdv.TP_PARAMS,mdv.MA_BT,test3)
+	SetPipeLine(mdv.MA_BT,ButtonSH)
 
-	--gfx.Text(gameplay.gauge.value or "",100,500)
+	SetPipeLine(mdv.MA_LS,LaserSH)
+
+	gfx.Text(gameplay.gauge.value or "",100,500)
+
+	gfx.Text("Laser",100,550)
+	gfx.Text("Left   : "..tr.." "..tb.." "..tg,100,575)
+	gfx.Text("Right: "..tr1.." "..tb1.." "..tg1,100,600)
 
 	for index, value in ipairs(TT) do
 		if beat >= value then
@@ -421,5 +467,5 @@ function render_bg(deltaTime)
 end
 
 function render_ffg(deltaTime)
-	--modelgen:Draw()
+	modelgen:Draw()
 end

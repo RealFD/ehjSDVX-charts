@@ -12,6 +12,7 @@ layout(location=1) out vec2 fsTex;
 uniform mat4 proj;
 uniform mat4 camera;
 uniform mat4 world;
+uniform int uIndex;
 
 mat3 rotationX(float angle) {
     return mat3(    1.0,        0,            0,
@@ -34,9 +35,10 @@ mat3 rotationZ(float angle) {
 void main()
 {
     fsTex = inTex;
-    vec4 pos = vec4(inPos*0.1, 1.0);
-    pos.x += .095;
-	
+    vec4 pos = vec4(inPos, 1.0);
+    pos.z += .1;
+
+
     pos = proj * camera * world * pos;
     gl_Position = pos;
 }
