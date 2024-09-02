@@ -1,0 +1,32 @@
+---@meta
+
+---> The `xero` class provides various things used in the Fork.
+--->
+--->
+--->
+---------------------------------------------------------
+---># Spline's:
+---------------------------------------------------------
+---> - `createSpline`    Creats Spline
+---> - `setSplineProperty` Sets the Spline Properties
+---> - `setEModSplineType` Sets the Type
+---> - `setModSpline` Modifies Spline
+--- 
+---------------------------------------------------------
+---># Modding:
+---------------------------------------------------------
+---> - `addMod` Make a new Mod
+---> - `setEMod` Makes the code after this be Focused on the current Mod
+---> - `setModEnable` Enables the Current Mod
+---> - `setModProperty` Sets the Mod Properties
+---> - `setModLayer` Sets the Mod on their Own Layer
+---> - `evaluateModTransform` //TODO Find out how to describe it
+---------------------------------------------------------
+---># Pipe:
+---------------------------------------------------------
+---> - ``
+---------------------------------------------------------
+---># Speed:
+---------------------------------------------------------
+---> - `SetHispeed` You can Change the Speed on the Fly
+xero = {}
