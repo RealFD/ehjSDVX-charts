@@ -885,7 +885,7 @@ fx-l=BitCrusher;10
 0000|00|--
 0000|00|--
 --
-//Chill Part
+//Chill Part Skade
 0000|00|--
 --
 0000|00|--
@@ -916,6 +916,7 @@ fx-l=BitCrusher;10
 --
 0000|00|--
 --
+//Chill Part End
 0000|00|--
 --
 0000|00|--

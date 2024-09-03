@@ -78,7 +78,7 @@ function render_bg(deltaTime)
 	do 
 		local gTable = {
 			pos ={50,700},
-			info = {{"bpm",bpm},{"barTimer",beat_to_str(barTimer)},{"offSync",offSync},{"trackTimer",trackTimer},{"currBeat",currBeat},{"beat",beat},{"gDeltaTime",gDeltaTime},{"TimeByBeat",background.GetTimeByBeat(39)}}
+			info = {{"bpm",bpm},{"barTimer",beat_to_str(barTimer)},{"trackTimer",trackTimer},{"currBeat",currBeat},{"beat",beat}}
 		}
 
 		if gameplay.practice_setup then
@@ -90,7 +90,7 @@ function render_bg(deltaTime)
 		debuger(state,gTable.info,gTable.pos)
 	end
 
-	debuger(state,gTable.info,gTable.pos)
+	--debuger(state,gTable.info,gTable.pos)
 
 	--gfx.Text(gameplay.gauge.value or "",100,500)
 	--gfx.Text("Laser",100,550)
