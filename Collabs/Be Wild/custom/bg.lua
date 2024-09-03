@@ -62,14 +62,6 @@ dofile(background.GetPath().."template/ease.lua")
 dofile(background.GetPath().."template/template.lua")
 
 function render_bg(deltaTime)
-
-	local r,b,g = game.GetLaserColor(0)
-	local r1,b1,g1 = game.GetLaserColor(1)
-
-	--background.DrawShader()
-
-	tr,tg,tb = r/255,g/255,b/255
-	tr1,tg1,tb1 = r1/255,g1/255,b1/255
 	
 	local state
 	
@@ -83,25 +75,25 @@ function render_bg(deltaTime)
 	smol = bouncebeat/5.0
 	big = bouncebeat/10.0
 
-	local gTable = {
-		pos ={50,700},
-		info = {{"bpm",bpm},{"barTimer",beat_to_str(barTimer)},{"offSync",offSync},{"trackTimer",trackTimer},{"currBeat",currBeat},{"beat",beat},{"gDeltaTime",gDeltaTime},{"TimeByBeat",background.GetTimeByBeat(39)}}
-	}
+	do 
+		local gTable = {
+			pos ={50,700},
+			info = {{"bpm",bpm},{"barTimer",beat_to_str(barTimer)},{"offSync",offSync},{"trackTimer",trackTimer},{"currBeat",currBeat},{"beat",beat},{"gDeltaTime",gDeltaTime},{"TimeByBeat",background.GetTimeByBeat(39)}}
+		}
 
-	if not gameplay.practice_setup then
-		state = true
-	else
-		state = false
+		if gameplay.practice_setup then
+			state = true
+		else
+			state = false
+		end
+	
+		debuger(state,gTable.info,gTable.pos)
 	end
 
-	debuger(state,gTable.info,gTable.pos)
-
-	gfx.Text(gameplay.gauge.value or "",100,500)
-
-	gfx.Text("Laser",100,550)
-	gfx.Text("Left   : "..tr.." "..tb.." "..tg,100,575)
-	gfx.Text("Right: "..tr1.." "..tb1.." "..tg1,100,600)
-
 	xero.update_command()
+	
+end
+
+function render_fg(deltaTime)
 	
 end
