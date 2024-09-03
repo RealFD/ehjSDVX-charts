@@ -96,12 +96,30 @@ function render_bg(deltaTime)
 
 	debuger(state,gTable.info,gTable.pos)
 
-	gfx.Text(gameplay.gauge.value or "",100,500)
-
-	gfx.Text("Laser",100,550)
-	gfx.Text("Left   : "..tr.." "..tb.." "..tg,100,575)
-	gfx.Text("Right: "..tr1.." "..tb1.." "..tg1,100,600)
+	--gfx.Text(gameplay.gauge.value or "",100,500)
+	--gfx.Text("Laser",100,550)
+	--gfx.Text("Left   : "..tr.." "..tb.." "..tg,100,575)
+	--gfx.Text("Right: "..tr1.." "..tb1.." "..tg1,100,600)
 
 	xero.update_command()
-	
+end
+
+function render_fg(deltaTime)
+end
+
+function render_ffg(deltaTime)
+	if gameplay.practice_setup ~= nil then
+		gfx.ForceRender()
+		local idt = {1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1}
+		gfx.SetNVGmodMat(idt)
+
+		_, _, trackTimer = background.GetTiming()
+		local currBeat = background.GetBeat()
+		local beat = (currBeat+background.GetBarTime())
+		
+		gfx.Text("beat "..string.format("%.3f",currBeat),100,790)
+		gfx.Text("beat "..string.format("%.3f",beat),100,800)
+		gfx.Text("time "..string.format("%.3f",trackTimer),100,810)
+		xero.printmods{}
+	end
 end
