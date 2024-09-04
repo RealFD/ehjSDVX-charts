@@ -23,48 +23,34 @@ local function debuger(state,tab,pos)
 			gfx.Text(string.upper(value[1]),pos[1],pos[2]+(index*32))
 			gfx.Text(tostring(value[2]),pos[1]+160,pos[2]+(index*32))
 		end
+		gfx.FontSize(16)
 	end
 end
 
+--{"barTimer",beat_to_str(barTimer)}
+
 local bg = {
-	renderDebugger = function(s)
+	renderDebugger = function(s,deltaTime)
 		local r,b,g = game.GetLaserColor(0)
 		local r1,b1,g1 = game.GetLaserColor(1)
-
-		--background.DrawShader()
 
 		tr,tg,tb = r/255,g/255,b/255
 		tr1,tg1,tb1 = r1/255,g1/255,b1/255
 		
-		local state
-		
 		local bpm = gameplay.bpm
-		barTimer, offSync, trackTimer = background.GetTiming()
+		barTimer, _, trackTimer = background.GetTiming()
 		local currBeat = background.GetBeat()
 		local beat = currBeat+background.GetBarTime()
-		gDeltaTime = deltaTime
 
-		bouncebeat = (bpm*gameplay.hispeed)
-		smol = bouncebeat/5.0
-		big = bouncebeat/10.0
+		gfx.Text(gameplay.gauge.value or "",100,500)
+		gfx.Text("Laser",100,520)
+		gfx.Text("L     : "..tr.." "..tb.." "..tg,100,540)
+		gfx.Text("R     : "..tr1.." "..tb1.." "..tg1,100,560)
 
-		local gTable = {
-			pos ={50,700},
-			info = {{"bpm",bpm},{"barTimer",beat_to_str(barTimer)},{"offSync",offSync},{"trackTimer",trackTimer},{"currBeat",currBeat},{"beat",beat},{"gDeltaTime",gDeltaTime},{"TimeByBeat",background.GetTimeByBeat(39)}}
-		}
-
-		if not gameplay.practice_setup then
-			state = true
-		else
-			state = false
-		end
-
-		debuger(true,gTable.info,gTable.pos) --TODO(fd)
-
-		--gfx.Text(gameplay.gauge.value or "",100,500)
-		--gfx.Text("Laser",100,550)
-		--gfx.Text("Left   : "..tr.." "..tb.." "..tg,100,575)
-		--gfx.Text("Right: "..tr1.." "..tb1.." "..tg1,100,600)
+		gfx.Text("bpm   :"..bpm,100,580)
+		gfx.Text("bTimer: "..beat_to_str(barTimer),100,600)
+		gfx.Text("cBeat : "..currBeat,100,620)
+		gfx.Text("Beat  : "..currBeat,100,640)
 	end,
 }
 
