@@ -5,6 +5,7 @@ local realfd = require('realfd/bg')
 OriginalXspeed = mod.GetHispeed()
 function cleanup()
 	skade:cleanup()
+	realfd:cleanup()
 	mod.SetHispeed(OriginalXspeed)
 	OriginalHispeed	= OriginalXspeed*gameplay.bpm
 end
@@ -16,6 +17,7 @@ end
 OrigianlHispeed = 0
 function init()
 	skade:init()
+	realfd:init()
 
 	--TODO(skade) careful, overwrite global state variables
 	mod.setDepthTest(mdv.MA_LS,false)

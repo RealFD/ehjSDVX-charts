@@ -1,2 +1,2 @@
-xero.perframe{0,999,"lsrScale"}
+xero.perframe{0,1,"lsrScale"}
 xero.ease{0,10,linear,2,"lsrScaleP"}

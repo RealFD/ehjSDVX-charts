@@ -1,7 +1,11 @@
 --TODO(fd)
 
-local resx, resy = game.GetResolution()
-local BGPath = background.GetPath()
+local function loadDefMod(fileName)
+	dofile(background.GetPath().."realfd/mods/"..fileName..".lua")
+end
+local function loadMod(fileName)
+	dofile(background.GetPath().."realfd/"..fileName..".lua")
+end
 
 local function beat_to_str(t)
 	if t < 0.25	then return	"♪___"
@@ -27,10 +31,8 @@ local function debuger(state,tab,pos)
 	end
 end
 
---{"barTimer",beat_to_str(barTimer)}
-
 local bg = {
-	renderDebugger = function(s,deltaTime)
+	renderDebugger = function(s)
 		local r,b,g = game.GetLaserColor(0)
 		local r1,b1,g1 = game.GetLaserColor(1)
 
@@ -52,6 +54,21 @@ local bg = {
 		gfx.Text("cBeat : "..currBeat,100,620)
 		gfx.Text("Beat  : "..currBeat,100,640)
 	end,
+	cleanup = function (s)
+	end,
+	init = function (s)
+		loadDefMod("test")
+		loadMod("mods")
+	end,
+	render_bg = function (s,deltaTime)
+		
+	end,
+	render_fg = function (s,deltaTime)
+		
+	end,
+	render_ffg = function (s,deltaTime)
+		
+	end
 }
 
 return bg
