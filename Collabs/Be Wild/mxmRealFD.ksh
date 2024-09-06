@@ -1,7 +1,7 @@
 ﻿title=Be Wild
 artist=Camellia feat. Yukacco
 effect=
-jacket=jacket.png
+jacket=jacket.jpg
 illustrator=
 difficulty=infinite
 level=1
@@ -20,7 +20,6 @@ ver=160
 --
 beat=4/4
 //start skade
-tilt=-10
 0000|00|0-
 0000|00|:-
 --
