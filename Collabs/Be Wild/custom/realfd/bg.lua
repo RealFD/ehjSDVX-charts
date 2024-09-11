@@ -58,6 +58,7 @@ local bg = {
 	end,
 	init = function (s)
 		loadDefMod("test")
+		loadDefMod("laser")
 		loadMod("mods")
 	end,
 	render_bg = function (s,deltaTime)

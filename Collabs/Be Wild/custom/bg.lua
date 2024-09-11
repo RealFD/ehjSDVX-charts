@@ -14,7 +14,7 @@ function loadMod(fileName)
 	dofile(background.GetPath().."mods/"..fileName..".lua")
 end
 
-OrigianlHispeed = 0
+OriginalHispeed = 0
 function init()
 	skade:init()
 	realfd:init()
