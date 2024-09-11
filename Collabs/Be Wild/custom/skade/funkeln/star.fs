@@ -6,10 +6,6 @@ layout(location=0) out vec4 target;
 
 uniform float u_time;
 
-//#define core 300
-
-//uniform vec2 u_resolution;
-
 float ndot(vec2 a, vec2 b ) { return a.x*b.x - a.y*b.y; }
 
 // thx iq
@@ -21,17 +17,9 @@ float sdRhombus( in vec2 p, in vec2 b )
 	return d * sign( p.x*b.y + p.y*b.x - b.x*b.y );
 }
 
-//vec2 viewIndepUV() {
-//	vec2 uv = gl_FragCoord.xy/u_resolution.xy;
-//	float aspect = u_resolution.x/u_resolution.y;
-//	uv.x *= aspect;
-//	uv.x -= (aspect-1.0)*0.5;
-//	return uv;
-//}
-
 void main(void)
 {
-	vec2 uv = fsTex;//viewIndepUV();
+	vec2 uv = fsTex;
 	vec2 ndc = uv * 2.0 - vec2(1.0);
 	vec4 col = vec4(1.);
 	ndc = ndc*1.02;
@@ -43,5 +31,4 @@ void main(void)
 	vec2 q1 = pow(q,vec2(abs(sin(u_time))*.7));
 	col.xyz += sdRhombus(q1,vec2(1.)) < 0. ? vec3(1.) : vec3(0.);
 	target = vec4(col.xyz, 1.0);
-	//gl_FragColor = vec4(col.xyz, 1.0);
 }

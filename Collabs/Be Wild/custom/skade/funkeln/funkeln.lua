@@ -33,9 +33,9 @@ local particleSystem = {
 	psize = 32,
 	particles = {},
 	init = function(s)
-		s.sm = gfx.CreateShadedMeshOnTrack()
-		s.sm:SetPrimitiveType(s.struckPreSM.PRIM_TRIFAN)
-		s.sm:SetBlendMode(s.struckPreSM.BLEND_NORM)
+		s.sm = track.CreateShadedMeshOnTrack("star",P_SKADE.."funkeln/")
+		s.sm:SetPrimitiveType(s.sm.PRIM_TRIFAN)
+		s.sm:SetBlendMode(s.sm.BLEND_NORM)
 		s.sm:SetData({
 			{{-1,-1, 0},{0,0}},
 			{{ 1,-1, 0},{1,0}},

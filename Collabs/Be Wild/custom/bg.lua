@@ -4,18 +4,20 @@ local realfd = require('realfd/bg')
 
 OriginalXspeed = mod.GetHispeed()
 function cleanup()
+	mod.SetHispeed(OriginalXspeed)
 	skade:cleanup()
 	realfd:cleanup()
-	mod.SetHispeed(OriginalXspeed)
-	OriginalHispeed	= OriginalXspeed*gameplay.bpm
 end
 
 function loadMod(fileName)
 	dofile(background.GetPath().."mods/"..fileName..".lua")
 end
 
-OrigianlHispeed = 0
+OriginalHispeed = 0
 function init()
+	OriginalHispeed	= OriginalXspeed*gameplay.bpm
+	loadMod("hispeed")
+
 	skade:init()
 	realfd:init()
 
@@ -44,9 +46,23 @@ dofile(background.GetPath().."template/template.lua")
 xero.plr = 1
 
 function render_bg(deltaTime)
+	do-- reapply manual hispeed changes
+		if game.GetButton(game.BUTTON_STA) then
+			if (LSR_L_OLD_ROT ~= game.GetKnob(0) or
+				LSR_R_OLD_ROT ~= game.GetKnob(1)) then
+				OriginalXspeed = mod.GetHispeed()
+			end
+		end
+		LSR_L_OLD_ROT = game.GetKnob(0)
+		LSR_R_OLD_ROT = game.GetKnob(1)
+	end
 	skade:render_bg(deltaTime)
 
 	xero.update_command()
+end
+
+function render_bfg(deltaTime)
+	skade:render_bfg(deltaTime)
 end
 
 function render_fg(deltaTime)

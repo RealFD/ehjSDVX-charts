@@ -13,9 +13,12 @@ uniform mat4 proj;
 uniform mat4 camera;
 uniform mat4 world;
 
-uniform mat4 u_t;
+//out vec4 pos;
 
-void main() {
+void main()
+{
 	fsTex = inTex;
-	gl_Position = proj * u_t * vec4(inPos, 1);
+	vec4 pos = vec4(inPos, 1.); //TODO remove vec4 error causes exception in vs2019
+	//pos.xy /= vec2(1080);
+	gl_Position = pos;
 }
