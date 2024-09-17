@@ -1,3 +1,5 @@
+dofile(background.GetPath().."bg0.lua")
+
 dofile(background.GetPath().."user.lua")
 local skade = require('skade/bg')
 local realfd = require('realfd/bg')

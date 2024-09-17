@@ -1,4 +1,3 @@
-
 local delayedOperations = {
 	u={},
 	speed=nil
@@ -7,7 +6,7 @@ local dark = game.GetSkinSetting("dark_mode") or game.GetSkinSetting("dark_bgs")
 
 -- backgroundTextures
 local bt = {
-	redDusk={"red_dusk.jpg", "red_dusk-c.jpg"},
+	cloudy={"cloudy.jpg", "cloudy-c.jpg"},
 	blank={"blank.png", "blank.png"}
 }
 
@@ -20,17 +19,17 @@ local function bc(bt, opts)
 end
 
 local pt = {
-	lightsPink={"lights_pink.png", "lights_pink-c.png"}
+	lightsPink={"lights_yellowgreen.png", "lights_yellowgreen-c.png"}
 }
 
 local bgs = {
 	waveRed={
-		Bg={ Base={Tex=bt.redDusk, ScaleSoft=true}},
+		Bg={ Base={Tex=bt.cloudy, ScaleSoft=true}},
 		Tunnel={
-			Tex={"wave-red.png","wave-red-c.png"},
+			Tex={"wave-green.png","wave-green-c.png"},
 			u={Sides=4, Stretch=0.15, ScaleX=0.8, ScaleY=0.8, FlashEffect=true, Fog=20.0}
 		},
-		Center={ Tex={{"moon_pink.png","moon_pink-c.png"},{0}}, u={Scale=8.0, OffsetY=-0.05}, LayerEffect={Tex="moon_pink_shine.png", Glow=true, DodgeBlend=true, Scale=0.8} },
+		--Center={ Tex={{"moon_pink.png","moon_pink-c.png"},{0}}, u={Scale=8.0, OffsetY=-0.05}, LayerEffect={Tex="moon_pink_shine.png", Glow=true, DodgeBlend=true, Scale=0.8} },
 		Particle={ Tex=pt.lightsPink, u={OffsetY=-0.02, Amount=4, Speed=2.0} },
 	}
 }
@@ -313,209 +312,3 @@ game.Log("bg:", 0)
 game.Log(tostring(k), 0)
 if bgTrumpcard then bg = bgTrumpcard end
 loadBackground(bg)
-
-----
--- render
-----
-
--- images
-local ABB1 = gfx.CreateImage(background.GetPath() .. "bg/1.png", 0)
-local ABB2 = gfx.CreateImage(background.GetPath() .. "bg/2.png", 0)
-local ABB3 = gfx.CreateImage(background.GetPath() .. "bg/3.png", 0)
-local ABB4 = gfx.CreateImage(background.GetPath() .. "bg/4.png", 0)
-local ABB5 = gfx.CreateImage(background.GetPath() .. "bg/5.png", 0)
-local ABB6 = gfx.CreateImage(background.GetPath() .. "bg/6.png", 0)
-local ABBN = gfx.CreateImage(background.GetPath() .. "bg/night.png", 0)
-local ABBC = gfx.CreateImage(background.GetPath() .. "bg/cover.png", 0)
-local ABBB = gfx.CreateImage(background.GetPath() .. "bg/black.png", 0)
-
-local bgw = 2048
-local bgh = 2048
-
--- chads
-local bg_alpha = 0
-local bg_alpha1 = 0
-local bg_alpha2 = 0
-local bg_alpha3 = 0
-local bg_alpha4 = 0
-local bg_alpha5 = 0
-local bg_alphaN = 0
-local ABscale = 0.5
-
--- timer
-local timer = 0
-local barTimer = 0
-local offSync = 0
-local blink_timer = 0
-local shake_timer = 0
-local fade_timer = 0
-
-local oldTimer = 0
-local function getDeltaTimeChart(timer)
-	local result = timer - oldTimer
-	oldTimer = timer
-	return result
-end
-
-local echoTimer = 0
-function echo(x, y, w, h, tex, a, duration, deltaTimeChart)
-	
-	gfx.Save()
-	if echoTimer < duration then
-	
-		echoTimer = echoTimer + deltaTimeChart
-		echoAlpha = a - (echoTimer/duration)*a
-		
-		gfx.Translate(0,50);
-		
-		gfx.BeginPath()
-		gfx.Scale(1+echoTimer, 1+echoTimer)
-		gfx.ImageRect(x,y-50,w,h,tex, echoAlpha*0.4, 0)
-		
-		gfx.BeginPath()
-		gfx.Scale(1+echoTimer, 1+echoTimer)
-		gfx.ImageRect(x,y-50,w,h,tex, echoAlpha*0.3, 0)
-		
-		gfx.BeginPath()
-		gfx.Scale(1+echoTimer, 1+echoTimer)
-		gfx.ImageRect(x,y-50,w,h,tex, echoAlpha*0.2, 0)
-	end
-	
-	gfx.Restore()
-end
-
-function echoReset()
-	echoTimer = 0
-	echoAlpha = 1
-end
-
-local bpm = 219.2
-
-function render_bg(deltaTime)
-	
-	-- timing stuff
-	barTimer, offSync, timer = background.GetTiming()
-	deltaTimeChart = getDeltaTimeChart(timer)
-	
-	if shouldRenderParticles then renderParticles(deltaTime) end
-	
-	gfx.Save()
-	gfx.ResetTransform()
-	gfx.BeginPath()
-	
-	
-	if timer < 23 then
-		background.DrawShader()
-	end
-	
-	--gfx.GlobalCompositeOperation(gfx.BLEND_OP_LIGHTER)
-	
-	--
-	-- render after shader
-	--
-	
-	laser, spin = background.GetTilt()
-	
-	if timer >= 1 and timer <= 23 then
-		
-		-- borders
-		gfx.Translate((resx/2),(resy/3))
-		gfx.Scale(scale*ABscale,scale*ABscale)
-		gfx.ImageRect(-bgw/2+bgw, -bgh/2, bgw, bgh, ABBB, bg_alpha*1.5, 0)
-		gfx.BeginPath()
-		gfx.ImageRect(-bgw/2-bgw, -bgh/2, bgw, bgh, ABBB, bg_alpha*1.5, 0)
-		-- borders		
-	end
-	
-	gfx.Save()
-	gfx.ResetTransform()
-	gfx.BeginPath()
-	gfx.Translate((resx/2),(resy/3))
-	gfx.Scale(scale*ABscale,scale*ABscale)
-	
-	if timer >= 7 and timer < 10 then
-		bg_alpha = bg_alpha + deltaTimeChart*0.1
-		gfx.ImageRect(-bgw/2, -bgh/2, bgw, bgh, ABB4, bg_alpha, 0)
-	end
-	
-	if timer >= 10 and timer < 23 then
-		bg_alpha = bg_alpha + deltaTimeChart*0.054
-		gfx.ImageRect(-bgw/2, -bgh/2, bgw, bgh, ABB4, bg_alpha, 0)
-	end
-	
-	if timer >= 23 and timer < 52 then
-		bg_alpha3 = bg_alpha3 + deltaTimeChart*0.035
-		gfx.ImageRect(-bgw/2, -bgh/2, bgw, bgh, ABB4, bg_alpha, 0)
-		gfx.ImageRect(-bgw/2, -bgh/2, bgw, bgh, ABB3, bg_alpha3, 0)
-		
-		if timer >= 38 and timer <= 38.5 then
-			echo(-bgw/2, -bgh/2, bgw, bgh, ABB3, bg_alpha, 0.5, deltaTimeChart)
-		end
-		
-		if timer >= 38.5 and timer <= 40 then echoReset() end
-		
-		if timer >= 40 and timer <= 40.5 then
-			echo(-bgw/2, -bgh/2, bgw, bgh, ABB3, bg_alpha, 0.5, deltaTimeChart)
-		end
-		
-		if timer >= 40.5 and timer <= 42.2 then echoReset() end
-		
-		if timer >= 42.2 and timer <= 42.7 then
-			echo(-bgw/2, -bgh/2, bgw, bgh, ABB3, bg_alpha, 0.5, deltaTimeChart)
-		end
-		
-		if timer >= 42.7 and timer <= 44.5 then echoReset() end
-		
-		if timer >= 44.5 and timer <= 45 then
-			echo(-bgw/2, -bgh/2, bgw, bgh, ABB3, bg_alpha, 0.5, deltaTimeChart)
-		end
-		
-		if timer >= 45 then echoReset() end
-		
-	end
-	
-	if timer >= 38 and timer < 51 then
-		shake_timer = shake_timer + deltaTimeChart
-		ABscale = 0.5+math.abs((math.sin(shake_timer*math.pi*3.653)))*0.05*(1-(shake_timer/13)^4)
-	end
-	
-	if timer >= 52 and timer < 71 then
-		bg_alpha2 = bg_alpha2 + deltaTimeChart*0.053
-		gfx.ImageRect(-bgw/2, -bgh/2, bgw, bgh, ABB3, bg_alpha3, 0)
-		gfx.ImageRect(-bgw/2, -bgh/2, bgw, bgh, ABB2, bg_alpha2, 0)
-	end
-	
-	if timer >= 71 and timer < 90 then
-		bg_alpha1 = bg_alpha1 + deltaTimeChart*0.053
-		gfx.ImageRect(-bgw/2, -bgh/2, bgw, bgh, ABB2, bg_alpha2, 0)
-		gfx.ImageRect(-bgw/2, -bgh/2, bgw, bgh, ABB1, bg_alpha1, 0)
-	end
-	
-	if timer >= 90 and timer < 132 then
-		bg_alpha5 = bg_alpha5 + deltaTimeChart*0.023
-		gfx.ImageRect(-bgw/2, -bgh/2, bgw, bgh, ABB1, bg_alpha1, 0)
-		gfx.ImageRect(-bgw/2, -bgh/2, bgw, bgh, ABB5, bg_alpha5, 0)
-	end
-	
-	if timer >= 132 and timer < 152 then
-		bg_alphaN = bg_alphaN + deltaTimeChart*0.05
-		gfx.ImageRect(-bgw/2, -bgh/2, bgw, bgh, ABB5, bg_alpha5, 0)
-		gfx.ImageRect(-bgw/2, -bgh/2, bgw, bgh, ABBN, bg_alphaN, 0)
-	end
-	
-	-- cover
-	gfx.ImageRect(-bgw/2, -bgh/2, bgw, bgh, ABBC, bg_alpha, 0)
-		
-	gfx.ResetTransform()
-	gfx.FillColor(255,255,255,255)
-	gfx.Text(timer, 100, 530)
-	gfx.Text(gameplay.progress, 100, 510)
-	gfx.Text(deltaTimeChart, 100, 550)
-	gfx.Text(laser, 100, 560)
-	gfx.Text(spin, 100, 570)
-
-	--gfx.GlobalCompositeOperation(gfx.BLEND_OP_SOURCE_OVER)
-	
-	gfx.Restore()
-	gfx.ForceRender()
-end
