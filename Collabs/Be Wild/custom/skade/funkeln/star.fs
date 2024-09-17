@@ -30,5 +30,9 @@ void main(void)
 		col.xyz = vec3(0.);
 	vec2 q1 = pow(q,vec2(abs(sin(u_time))*.7));
 	col.xyz += sdRhombus(q1,vec2(1.)) < 0. ? vec3(1.) : vec3(0.);
-	target = vec4(col.xyz, 1.0);
+
+	float a = min(.3,u_time);
+	if (u_time > 3.)
+		a = (4.-u_time);
+	target = vec4(col.xyz*a,1.);
 }

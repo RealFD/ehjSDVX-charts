@@ -24,6 +24,8 @@ uniform int Bg = 0;
 
 uniform float BgPivot = .27;
 
+uniform float u_alpha;
+
 uniform int BgBase = 0;
 uniform sampler2D BgBaseTex;
 uniform int BgBaseClearVersion = 0;
@@ -540,7 +542,7 @@ void main() {
 	}
 	//END PARTICLES
 
-	target.a = 1.0;
+	target.a = u_alpha;
 }
 
 //Edited by Halo ID => edited by Shirijii

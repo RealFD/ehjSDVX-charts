@@ -60,6 +60,11 @@ dofile(background.GetPath().."template/ease.lua")
 dofile(background.GetPath().."template/template.lua")
 xero.plr = 1
 
+-- background uniforms
+Ubgfs = {
+	alpha = 1,
+}
+
 function button_hit(btn, rating, delta)
 	skade:button_hit(btn,rating,delta)
 end
@@ -76,6 +81,7 @@ function render_bg(deltaTime)
 		LSR_R_OLD_ROT = game.GetKnob(1)
 	end
 	skade:render_bg(deltaTime)
+	background.SetParamf("u_alpha",Ubgfs.alpha)
 	background.DrawShader()
 
 	xero.update_command()

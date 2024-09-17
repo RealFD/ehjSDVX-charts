@@ -1,9 +1,15 @@
 
 local function initializeParticle(initial,particleSizeSpread)
+
+	local rand = function()
+		return math.random()*2.-1.
+	end
+
 	local particle = {}
-	particle.x = math.random()
-	particle.y = math.random() * 1.2 - 0.1
-	particle.z = math.random() * 10.
+	particle.time = math.random()
+	particle.x = rand()*20.
+	particle.y = (math.random() * 1.2*5. - 0.1)
+	particle.z = -2 - math.random() * 100.
 	if not initial then particle.y = -0.1 end
 
 	particle.r = math.random()
@@ -26,23 +32,23 @@ local function sign(x)
 end
 
 local particleSystem = {
-	sm = {}, -- shaded mesh
+	sm = track.CreateShadedMeshOnTrack("star",P_SKADE.."funkeln/"),
 	timer = 0,
-	particleCount = 30,
+	particleCount = 128,
 	particleSizeSpread = 0.5,
 	psize = 32,
 	particles = {},
 	init = function(s)
-		s.sm = track.CreateShadedMeshOnTrack("star",P_SKADE.."funkeln/")
 		s.sm:SetPrimitiveType(s.sm.PRIM_TRIFAN)
-		s.sm:SetBlendMode(s.sm.BLEND_NORM)
+		s.sm:SetBlendMode(s.sm.BLEND_ADD)
 		s.sm:SetData({
 			{{-1,-1, 0},{0,0}},
 			{{ 1,-1, 0},{1,0}},
 			{{ 1, 1, 0},{1,1}},
 			{{-1, 1, 0},{0,1}},
 		})
-	--TODO(skade)	s.sm:SetDepthTest(true)
+		--TODO(skade)	s.sm:SetDepthTest(true)
+		s.sm:SetScreenSpace(false)
 
 		for i=1,s.particleCount do
 			s.particles[i] = initializeParticle(true,s.particleSizeSpread)
@@ -56,43 +62,45 @@ local particleSystem = {
 		local scale = resx / desw
 
 		for i,p in ipairs(s.particles) do
+			p.time = p.time + deltaTime*.8
 			p.x = p.x + p.xv * deltaTime
-			p.y = p.y + p.yv * deltaTime
-			p.r = p.r + p.rv * deltaTime
+			p.y = p.y + p.yv * deltaTime*10.
+			p.r = p.r + p.rv * deltaTime -- rotation
+
+			-- movement
 			p.p = (p.p + deltaTime) % (math.pi * 2)
-			
 			p.xv = 0.5 - ((p.x * 2) % 1) + (0.5 * sign(p.x - 0.5))
 			p.xv = math.max(math.abs(p.xv * 2) - 1, 0) * sign(p.xv)
 			p.xv = p.xv * p.y
 			p.xv = p.xv + math.sin(p.p) * 0.01
 			
-			gfx.Save()
-			gfx.ResetTransform()
-			gfx.Translate(p.x * resx, p.y * resy)
-			gfx.Rotate(p.r)
-			gfx.Scale(p.s * scale, p.s * scale)
-			gfx.BeginPath()
-			gfx.GlobalCompositeOperation(gfx.BLEND_OP_LIGHTER)
+			--gfx.Save()
+			--gfx.ResetTransform()
+			--gfx.Translate(p.x * resx, p.y * resy)
+			--gfx.Rotate(p.r)
+			--gfx.Scale(p.s * scale, p.s * scale)
+			--gfx.BeginPath()
+			--gfx.GlobalCompositeOperation(gfx.BLEND_OP_LIGHTER)
 			--TODO(skade) render shaded mesh
 			--gfx.ImageRect(-s.psize/2, -s.psize/2, s.psize, s.psize, tex, math.max(1 - p.y*2,0), 0)
 
 			p.t = {
-				1,0,0,p.x,
-				0,1,0,p.y,
-				0,0,1,p.z,
-				0,0,0,1,
+				p.s,0,0,p.x,
+				0,p.s,0,p.y,
+				0,0,p.s,p.z,
+				0,0,0  ,1,
 			}
+			p.t = gfx.MultMat(gfx.GetRotMat({90,0,0}),p.t)
 			s.sm:SetParamMat4("u_t",p.t)
 
-			s.timer = s.timer + deltaTime
-			s.sm:SetParamf("u_time",s.timer)
+			s.sm:SetParam("u_time",p.time)
 			s.sm:Draw()
 
-			gfx.Restore()
-			if p.y > 1.1 then 
-				s.particles[i] = initializeParticle(false)
+			if p.y > 4 then 
+				s.particles[i] = initializeParticle(false,s.particleSizeSpread)
 			end
 		end
+		--gfx.ForceRender()
 	end,
 }
 

@@ -43,12 +43,14 @@ local bg = {
 		s.ssqTest:SetData(ssqDat)
 	end,
 	render_bg = function(s,deltaTime)
-		--s.particleSystem:render(deltaTime)
 	end,
 	render_bfg = function(s,deltaTime)
 		--gfx.SetfbTexture("FBTest",0,0)
 	end,
 	render_fg = function(s,deltaTime)
+		if Ubgfs.alpha < 1 then
+			s.particleSystem:render(deltaTime)
+		end
 		tap:render(deltaTime)
 		tapFX:render(deltaTime)
 	end,
