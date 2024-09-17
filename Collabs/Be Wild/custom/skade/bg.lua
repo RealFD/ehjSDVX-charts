@@ -11,6 +11,10 @@ end
 
 local resx, resy = game.GetResolution()
 
+local TAP = require('skade/tap_exp/tap')
+local tap = TAP.new(false)
+local tapFX = TAP.new(true)
+
 local bg = {
 	particleSystem = require('skade/funkeln/funkeln'),
 	FBTexTest = gfx.CreatefbTexture("FBTest",resx,resy),
@@ -21,6 +25,8 @@ local bg = {
 	end,
 	init = function(s)
 		loadDefMod('lsrScale')
+		loadDefMod('reverse')
+		loadDefMod('starTarget')
 		loadMod('mods')
 		s.particleSystem:init()
 
@@ -43,11 +49,25 @@ local bg = {
 		--gfx.SetfbTexture("FBTest",0,0)
 	end,
 	render_fg = function(s,deltaTime)
-		
+		tap:render(deltaTime)
+		tapFX:render(deltaTime)
 	end,
 	render_ffg = function(s,deltaTime)
 		--s.ssqTest:Draw()
 	end,
 }
+
+
+function bg:button_hit(btn, rating, delta)
+	if rating == 1 or rating == 2 then
+		if btn < 4 then
+			tap.timings[btn] = tap.animLen
+			tap.ratings[btn] = rating
+		else
+			tapFX.timings[btn-4] = tapFX.animLen
+			tapFX.ratings[btn-4] = rating
+		end
+	end
+end
 
 return bg

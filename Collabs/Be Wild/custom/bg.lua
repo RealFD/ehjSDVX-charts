@@ -2,11 +2,24 @@ dofile(background.GetPath().."user.lua")
 local skade = require('skade/bg')
 local realfd = require('realfd/bg')
 
+Sgt = require('template/ehj/sharedGlobalTable')
+
 OriginalXspeed = mod.GetHispeed()
 function cleanup()
 	mod.SetHispeed(OriginalXspeed)
 	skade:cleanup()
 	realfd:cleanup()
+
+	do
+		globals.bannerOpacity = 0
+		globals.critLineAlpha = 1
+		Sgt.set("songInfoFillC",{1,1,1})
+		Sgt.set("scoreFillC",{1,1,1})
+		Sgt.set("critLineFillC",{1,1,1})
+		Sgt.set("consoleFillC",{1,1,1})
+		Sgt.set("gaugeFillC",{1,1,1})
+		Sgt.set("bannerFillC",{1,1,1})
+	end
 end
 
 function loadMod(fileName)
@@ -45,6 +58,10 @@ dofile(background.GetPath().."template/ease.lua")
 dofile(background.GetPath().."template/template.lua")
 xero.plr = 1
 
+function button_hit(btn, rating, delta)
+	skade:button_hit(btn,rating,delta)
+end
+
 function render_bg(deltaTime)
 	do-- reapply manual hispeed changes
 		if game.GetButton(game.BUTTON_STA) then
@@ -57,6 +74,7 @@ function render_bg(deltaTime)
 		LSR_R_OLD_ROT = game.GetKnob(1)
 	end
 	skade:render_bg(deltaTime)
+	background.DrawShader()
 
 	xero.update_command()
 end

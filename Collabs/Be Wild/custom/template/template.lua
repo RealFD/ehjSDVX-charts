@@ -1416,7 +1416,7 @@ local function ready_command(self)
 end
 
 local update_finished_successfully = true
-local last_time = background.GetTime()
+local last_time = -math.maxinteger
 
 function xero.update_command(self)
 	-- guard logic so that if the template crashes,
