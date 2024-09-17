@@ -57,6 +57,7 @@ local bg = {
 	cleanup = function (s)
 	end,
 	init = function (s)
+		loadDefMod("swish")
 		loadDefMod("test")
 		loadDefMod("laser")
 		loadMod("mods")
