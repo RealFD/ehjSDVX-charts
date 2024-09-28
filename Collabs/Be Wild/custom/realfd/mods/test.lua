@@ -1,9 +1,6 @@
-mod.setEModSplineType(mdv.MST_X)
-mod.addMod("test1",mdv.MT_T)
-mod.setEMod("test1")
-mod.createSpline(128)
-mod.setModProperty(mdv.ML_ALL,mdv.MA_ALL)
-mod.setModLayer(3)
+local short = dofile(background.GetPath().."/realfd/shortcuts.lua")
+
+short.Create("test1",mdv.MST_X,mdv.MT_T,mdv.ML_ALL,mdv.MA_ALL,128,3)
 
 xero.definemod {"test","testP", function (b,p)
     local beat = b

@@ -57,13 +57,48 @@ local bg = {
 	cleanup = function (s)
 	end,
 	init = function (s)
+		loadDefMod("nerd")
 		loadDefMod("swish")
 		loadDefMod("test")
 		loadDefMod("laser")
 		loadMod("mods")
 	end,
 	render_bg = function (s,deltaTime)
-		
+		local _, _, trackTimer = background.GetTiming()
+		if U_REALFD then --trackTimer > 2.0 then
+			local idt = {
+			1,0,0,0,
+			0,1,0,0,
+			0,0,1,0,
+			0,0,0,1
+		}
+			local smSin = 10*(math.sin(trackTimer)*.5+.5)
+			local smSin2 = 10*(math.cos(trackTimer)*.5+.5)
+			smSin2 = -smSin*.5
+			local smSin3 = 0
+			--local t0 = gfx.GetTransMat({0,0,-smSin*.1})
+			--local t1 = gfx.GetTransMat({0,-10,0})
+			--local t2 = gfx.GetInverse(t1)
+			--local rot = gfx.GetRotMat({-smSin,smSin2,smSin3})
+			--local zscl = gfx.GetScaleMat({1,1,1})--+.5+.5*math.sin(trackTimer*.5)})
+			--local m = gfx.MultMat(t1,rot,t2,t0,zscl) --TODO m is not affine (m[16] != 1) check and debug
+			local m = gfx.GetTransMat({0,-smSin*.05,smSin*.1})
+			--local t0 = gfx.GetTransMat({0,0,-20})
+			--local t1 = gfx.GetTransMat({0,0,0})
+			--local t2 = gfx.GetTransMat({0,0,10})
+			--local rot = gfx.GetRotMat({0,30,0})
+			--local zscl = gfx.GetScaleMat({1,1,1})--+.5+.5*math.sin(trackTimer*.5)})
+			--local proj = mod.GetProjMatNVG()
+			--local m = gfx.MultMat(t0,t1,rot,t2,zscl) --TODO m is not affine (m[16] != 1) check and debug
+			--local rot2 = gfx.GetRotMat({trackTimer*15,0,0})
+			--local t3 = gfx.GetTransMat({0,0,-4})
+			--local m = gfx.MultMat(t3,rot2)
+			mod.SetCamModMat(m)
+			gfx.SetNVGmodMat(m)
+			local proj = mod.GetProjMatNVG()
+			gfx.SetNVGprojMat(proj)
+			gfx.SetNVGprojMatSkin(proj)
+		end
 	end,
 	render_fg = function (s,deltaTime)
 		

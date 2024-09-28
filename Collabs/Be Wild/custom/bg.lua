@@ -81,6 +81,7 @@ function render_bg(deltaTime)
 		LSR_R_OLD_ROT = game.GetKnob(1)
 	end
 	skade:render_bg(deltaTime)
+	realfd:render_bg(deltaTime)
 	background.SetParamf("u_alpha",Ubgfs.alpha)
 	background.DrawShader()
 
@@ -102,7 +103,7 @@ function render_ffg(deltaTime)
 	local idt = {1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1}
 	gfx.SetNVGmodMat(idt)
 
-	_, _, trackTimer = background.GetTiming()
+	local _, _, trackTimer = background.GetTiming()
 	local currBeat = background.GetBeat()
 	local beat = (currBeat+background.GetBarTime())
 	
