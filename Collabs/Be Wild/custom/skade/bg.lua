@@ -31,6 +31,7 @@ local bg = {
 		loadDefMod('freeze')
 		loadDefMod('baseT')
 		loadDefMod('globalT')
+		loadDefMod('helixPierce')
 		loadMod('mods')
 		s.particleSystem:init()
 

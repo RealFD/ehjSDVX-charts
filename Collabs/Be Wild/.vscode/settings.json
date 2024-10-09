@@ -2,5 +2,6 @@
     "Lua.workspace.library": [
       "${workspaceFolder}/scr",
     ],
+    "Lua.completion.autoRequire": false,
   }
   

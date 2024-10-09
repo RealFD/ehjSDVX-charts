@@ -63,6 +63,9 @@ xero.ease{80,1/16,linear,1/bs1,"baseScaleY"}
 xero.ease{81,1/16,linear,1/bs2,"baseScaleY"}
 xero.ease{82,1/16,linear,1,"baseScaleY"}
 
+xero.perframe{80,4,"helixPierce"}
+xero.ease{80,1/16,linear,1,"helixPierceP"}
+
 xero.perframe{80,4,"globalScale"}
 xero.ease{80,1/16,linear,bs1,"globalScaleY"}
 xero.ease{81,1/16,linear,bs2,"globalScaleY"}
@@ -81,10 +84,15 @@ xero.perframe{81,2,"reverse"}
 xero.ease{81,1/16,linear,1,"reverseP"}
 xero.set{82,0,"reverseP"}
 
--- impact
-xero.ease{82-3/4,3/4,inCirc,mdv.TRACK_H,"globalTransY"}
-xero.ease{82,1/16,linear,0,"globalTransY"}
+-- impact --TODO this is not what I want
+--xero.ease{82-3/4,3/4,inCirc,mdv.TRACK_H,"globalTransY"}
+--xero.ease{82,1/16,linear,0,"globalTransY"}
 
 xero.perframe{82-2/4,2,"spinImpact"}
-xero.ease{82-2/4,2/4,linear,1,"spinImpactP"}
+xero.ease{82-2/4,2/4,inExpo,1,"spinImpactP"}
 xero.set{82+1/4,0,"spinImpactP"}
+
+xero.perframe{82,2,"spinImpactSlam"}
+xero.set{82,50,"spinImpactSlamP"}
+xero.ease{82,1/4,outExpo,0,"spinImpactSlamP"}
+xero.set{82+1/4,0,"spinImpactSlamP"}
