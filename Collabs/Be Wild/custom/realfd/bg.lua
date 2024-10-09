@@ -1,10 +1,28 @@
 --TODO(fd)
 
+local BG_RealFD = background.GetPath().."realfd/"
+
+-- Global Uniforms From RealFD
+FD_U = {
+	USM_data = {
+				{{-1, -1}, {0, 0}},
+				{{1, -1}, {1, 0}},
+				{{-1, 1}, {0, 1}},
+				{{1, -1}, {1, 0}},
+				{{1, 1}, {1, 1}},
+				{{-1, 1}, {0, 1}},
+			},
+	U_distort = 0,
+	U_fuzzy = 0,
+}
+
+local g_res_x,g_res_y = game.GetResolution() 
+
 local function loadDefMod(fileName)
-	dofile(background.GetPath().."realfd/mods/"..fileName..".lua")
+	dofile(BG_RealFD.."/mods/"..fileName..".lua")
 end
 local function loadMod(fileName)
-	dofile(background.GetPath().."realfd/"..fileName..".lua")
+	dofile(BG_RealFD..fileName..".lua")
 end
 
 local function beat_to_str(t)
@@ -32,6 +50,9 @@ local function debuger(state,tab,pos)
 end
 
 local bg = {
+	SM_Distort = gfx.CreateShadedMesh("distort",BG_RealFD.."/shaders/"),
+	SM_Fuzzy = gfx.CreateShadedMesh("fuzzy",BG_RealFD.."/shaders/"),
+	FBText = gfx.CreatefbTexture("FD_bgfb",g_res_x,g_res_y),
 	renderDebugger = function(s)
 		local r,b,g = game.GetLaserColor(0)
 		local r1,b1,g1 = game.GetLaserColor(1)
@@ -57,54 +78,32 @@ local bg = {
 	cleanup = function (s)
 	end,
 	init = function (s)
+		s.SM_Distort:SetData(FD_U.USM_data)
+		s.SM_Distort:AddfbTexture("u_fb","FD_bgfb")
+		s.SM_Fuzzy:SetData(FD_U.USM_data)
+		s.SM_Fuzzy:AddfbTexture("u_fb","FD_bgfb")
+		--s.test:AddTexture("u_fb", BG_RealFD.."/texture/test.png")
+
 		loadDefMod("nerd")
 		loadDefMod("swish")
 		loadDefMod("test")
 		loadDefMod("laser")
+		loadDefMod("cam_ease")
 		loadMod("mods")
 	end,
 	render_bg = function (s,deltaTime)
-		local _, _, trackTimer = background.GetTiming()
-		if U_REALFD then --trackTimer > 2.0 then
-			local idt = {
-			1,0,0,0,
-			0,1,0,0,
-			0,0,1,0,
-			0,0,0,1
-		}
-			local smSin = 10*(math.sin(trackTimer)*.5+.5)
-			local smSin2 = 10*(math.cos(trackTimer)*.5+.5)
-			smSin2 = -smSin*.5
-			local smSin3 = 0
-			--local t0 = gfx.GetTransMat({0,0,-smSin*.1})
-			--local t1 = gfx.GetTransMat({0,-10,0})
-			--local t2 = gfx.GetInverse(t1)
-			--local rot = gfx.GetRotMat({-smSin,smSin2,smSin3})
-			--local zscl = gfx.GetScaleMat({1,1,1})--+.5+.5*math.sin(trackTimer*.5)})
-			--local m = gfx.MultMat(t1,rot,t2,t0,zscl) --TODO m is not affine (m[16] != 1) check and debug
-			local m = gfx.GetTransMat({0,-smSin*.05,smSin*.1})
-			--local t0 = gfx.GetTransMat({0,0,-20})
-			--local t1 = gfx.GetTransMat({0,0,0})
-			--local t2 = gfx.GetTransMat({0,0,10})
-			--local rot = gfx.GetRotMat({0,30,0})
-			--local zscl = gfx.GetScaleMat({1,1,1})--+.5+.5*math.sin(trackTimer*.5)})
-			--local proj = mod.GetProjMatNVG()
-			--local m = gfx.MultMat(t0,t1,rot,t2,zscl) --TODO m is not affine (m[16] != 1) check and debug
-			--local rot2 = gfx.GetRotMat({trackTimer*15,0,0})
-			--local t3 = gfx.GetTransMat({0,0,-4})
-			--local m = gfx.MultMat(t3,rot2)
-			mod.SetCamModMat(m)
-			gfx.SetNVGmodMat(m)
-			local proj = mod.GetProjMatNVG()
-			gfx.SetNVGprojMat(proj)
-			gfx.SetNVGprojMatSkin(proj)
-		end
+
 	end,
 	render_fg = function (s,deltaTime)
-		
+
 	end,
 	render_ffg = function (s,deltaTime)
-		
+		gfx.ForceRender()
+		gfx.SetfbTexture("FD_bgfb",0,0)
+		s.SM_Distort:Draw()
+		s.SM_Distort:SetParam("u_fade",FD_U.U_distort)
+		s.SM_Fuzzy:Draw()
+		s.SM_Fuzzy:SetParam("u_fade",FD_U.U_fuzzy)
 	end
 }
 

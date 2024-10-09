@@ -21,7 +21,6 @@ local function setAndEaseCustom(startTime, duration, easeDuration, easingType, m
     end
 end
 
-
 local function setXeroAlternatingMods(t)
     if not t then
         return
@@ -62,10 +61,121 @@ local function setXeroAlternatingMods(t)
     end
 end
 
-xero.perframe{10,18,"test"}
-xero.ease{10,0.45,bounce,.5,"testP"}
-xero.ease{12,0.45,bounce,.5,"testP"}
-xero.ease{16,0.5,bounce,.5,"testP"}
+
+-- Set parameters for the cam function (can be called multiple times)
+local function setCameraEase(t,matrixFunc)
+    -- Check if 't' is valid
+    if not t then
+        return
+    end
+    
+    -- Store parameters in the cam object for later access
+    local params = {
+        start = t.start or t[1],
+        length = t.length or t[2],
+        ease = t.ease or t[3],
+        Vstart = t.Vstart or t[4],
+        Vend = t.Vend or t[5],
+        Tmat = t.Tmat or t[6],
+        Rmat = t.Rmat or t[7],
+    }
+
+    xero.func_ease {params.start, params.length, params.ease, params.Vstart, params.Vend, function(p)
+        local _, _, trackTimer = background.GetTiming()
+        
+        -- Condition to check some real-time flag or timer
+        if U_REALFD then
+            local smSin = 10 * (math.sin(trackTimer) * 0.5 + 0.5)
+            local smSin2 = -smSin * 0.5
+            local smSin3 = 0
+            
+            local m = matrixFunc(p)
+
+            -- Apply the matrix as camera modifier
+            mod.SetCamModMat(m)
+            gfx.SetNVGmodMat(m)
+
+            -- Update the projection matrices
+            local proj = mod.GetProjMatNVG()
+            gfx.SetNVGprojMat(proj)
+            gfx.SetNVGprojMatSkin(proj)
+        end
+    end}
+
+    xero.func{params.start-1,function ()
+        local idt = {
+            1,0,0,0,
+            0,1,0,0,
+            0,0,1,0,
+            0,0,0,1
+        }
+        mod.SetCamModMat(idt)
+    end}
+end
+
+-- Usage:
+-- setCameraEase(t) to set or update parameters multiple times
+
+local function setEase(t,val)
+    local params = {
+        start = t.start or t[1],
+        length = t.length or t[2],
+        ease = t.ease or t[3],
+        Vstart = t.Vstart or t[4],
+        Vend = t.Vend or t[5],
+        Tmat = t.Tmat or t[6],
+        Rmat = t.Rmat or t[7],
+    }
+    xero.func_ease {params.start, params.length, params.ease, params.Vstart, params.Vend, function(p)
+        FD_U[val] = p
+    end}
+    
+end
+
+setEase({24-(4/16),0.25,inExpo,0,.25},"U_fuzzy")
+setEase({32,0.25,outExpo,.25,-1},"U_fuzzy")
+
+setEase({96+(4/16),0.25,bounce,-1,1},"U_fuzzy")
+setEase({96+(12/16),0.25,bounce,-1,1},"U_fuzzy")
+
+setEase({97+(4/16),0.25,bounce,-1,1},"U_fuzzy")
+setEase({97+(12/16),0.25,bounce,-1,1},"U_fuzzy")
+
+setEase({98+(4/16),0.25,bounce,-1,1},"U_fuzzy")
+setEase({98+(12/16),0.25,bounce,-1,1},"U_fuzzy")
+
+setEase({99+(4/16),0.25,bounce,-1,1},"U_fuzzy")
+setEase({99+(12/16),0.25,bounce,-1,1},"U_fuzzy")
+
+setEase({102+(8/16),0.25,bounce,-1,1},"U_fuzzy")
+
+
+--[[
+xero.ease{97+(12/16),0.25,bounce,1,"ShaderP"}
+xero.ease{97+(12/16),0.25,bounce,.75,"ShaderN"}
+
+xero.ease{98+(4/16),0.25,bounce,1,"ShaderP"}
+xero.ease{98+(4/16),0.25,bounce,.75,"ShaderN"}
+
+xero.ease{98+(12/16),0.25,bounce,1,"ShaderP"}
+xero.ease{98+(12/16),0.25,bounce,.75,"ShaderN"}
+
+xero.ease{99+(4/16),0.25,bounce,1,"ShaderP"}
+xero.ease{99+(4/16),0.25,bounce,.75,"ShaderN"}
+
+xero.ease{99+(12/16),0.25,bounce,1,"ShaderP"}
+xero.ease{99+(12/16),0.25,bounce,.75,"ShaderN"}
+
+
+xero.ease{102+(15/32),0.5,bounce,1,"ShaderP"}
+xero.ease{102+(15/32),0.5,bounce,1,"ShaderN"}
+]]
+
+
+--xero.perframe{10,18,"test"}
+--xero.ease{10,0.45,bounce,.5,"testP"}
+--xero.ease{12,0.45,bounce,.5,"testP"}
+--xero.ease{16,0.5,bounce,.5,"testP"}
 --xero.ease{18,0.5,bounce,.5,"testP"}
 
 setXeroAlternatingMods({ModName1 = "RightSide", ModName2 = "LeftSide", start = 70, ending = 5, l_per = 0.5, l_ease = 1/4, easing = bounce, signiture = 1/4, amount = 4})
@@ -75,8 +185,147 @@ xero.ease{72,1,linear,-.5,"LeftSideP"}
 xero.ease{72,1,linear,-.5,"RightSideP"}
 
 
-setAndEaseCustom(44,4,1/4,inSine,"nerd",4,{1, 2, 3, 4},{mdv.BT_W, mdv.BT_W, mdv.BT_W, mdv.BT_W})
+--setAndEaseCustom(44,4,1/4,inSine,"nerd",4,{1, 2, 3, 4},{mdv.BT_W, mdv.BT_W, mdv.BT_W, mdv.BT_W})
 
 
 xero.perframe{14,1,"LaserWave"}
 xero.ease{14,0.45,bounce,1.5,"LWX"}
+
+local matrixFuncTest0 = function(p)
+    -- Camera transformation matrices
+    local m = gfx.GetTransMat({0, 0, -p})  -- Translation matrix
+    -- Combine rotation and translation matrices
+    return gfx.MultMat(m)
+end
+
+setCameraEase({23,1,inExpo,0,1,{0,2,2}},matrixFuncTest0)
+
+setCameraEase({24,1,outExpo,1,0,{0,2,2}},matrixFuncTest0)
+
+local matrixFuncTest = function(p)
+    -- Camera transformation matrices
+    local m = gfx.GetTransMat({0, p * -2, p * -2})  -- Translation matrix
+    local rot2 = gfx.GetRotMat({-p * 60, 0, 0})  -- Rotation matrix
+    
+    -- Combine rotation and translation matrices
+    return gfx.MultMat(rot2, m)
+end
+
+setCameraEase({71,1,bounce,0,1,{0,2,2}},matrixFuncTest)
+
+local matrixFuncTest2 = function(p)
+    -- Camera transformation matrices
+    local m = gfx.GetTransMat({0, p * -2, p * -2})  -- Translation matrix
+    local rot2 = gfx.GetRotMat({-p * 60, 0, 0})  -- Rotation matrix
+    
+    -- Combine rotation and translation matrices
+    return gfx.MultMat(rot2, m)
+end
+
+setCameraEase({91,1,bounce,0,1,{0,2,2}},matrixFuncTest2)
+
+xero.func{71-1,function ()
+    local idt = {
+        1,0,0,0,
+        0,1,0,0,
+        0,0,1,0,
+        0,0,0,1
+    }
+    mod.SetCamModMat(idt)
+end}
+
+
+xero.func_ease {78-1/4, 1/4, bounce, 0, 1, function(p)
+    local _, _, trackTimer = background.GetTiming()
+    if U_REALFD then
+        local smSin = 10*(math.sin(trackTimer)*.5+.5)
+        local smSin2 = 10*(math.cos(trackTimer)*.5+.5)
+        smSin2 = -smSin*.5
+        local smSin3 = 0
+        --local t0 = gfx.GetTransMat({0,0,-smSin*.1})
+        --local t1 = gfx.GetTransMat({0,-10,0})
+        --local t2 = gfx.GetInverse(t1)
+        --local rot = gfx.GetRotMat({-smSin,smSin2,smSin3})
+        --local zscl = gfx.GetScaleMat({1,1,1})--+.5+.5*math.sin(trackTimer*.5)})
+        --local m = gfx.MultMat(t1,rot,t2,t0,zscl) --TODO m is not affine (m[16] != 1) check and debug
+        local m = gfx.GetTransMat({0,0,-p})
+        local rot2 = gfx.GetRotMat({0,0,-p*45})
+        --local t3 = gfx.GetTransMat({0,0,-4})
+        m = gfx.MultMat(m)
+        mod.SetCamModMat(m)
+        gfx.SetNVGmodMat(m)
+        local proj = mod.GetProjMatNVG()
+        gfx.SetNVGprojMat(proj)
+        gfx.SetNVGprojMatSkin(proj)
+    end
+end}
+
+xero.func{78-1+1/4,function ()
+    local idt = {
+        1,0,0,0,
+        0,1,0,0,
+        0,0,1,0,
+        0,0,0,1
+    }
+    mod.SetCamModMat(idt)
+end}
+
+xero.func_ease {86-1/4, 1/4, bounce, 0, 1, function(p)
+    local _, _, trackTimer = background.GetTiming()
+    if U_REALFD then --trackTimer > 2.0 then
+        local smSin = 10*(math.sin(trackTimer)*.5+.5)
+        local smSin2 = 10*(math.cos(trackTimer)*.5+.5)
+        smSin2 = -smSin*.5
+        local smSin3 = 0
+        --local t0 = gfx.GetTransMat({0,0,-smSin*.1})
+        --local t1 = gfx.GetTransMat({0,-10,0})
+        --local t2 = gfx.GetInverse(t1)
+        --local rot = gfx.GetRotMat({-smSin,smSin2,smSin3})
+        --local zscl = gfx.GetScaleMat({1,1,1})--+.5+.5*math.sin(trackTimer*.5)})
+        --local m = gfx.MultMat(t1,rot,t2,t0,zscl) --TODO m is not affine (m[16] != 1) check and debug
+        local m = gfx.GetTransMat({0,0,-p})
+        local rot2 = gfx.GetRotMat({0,0,p*45})
+        --local t3 = gfx.GetTransMat({0,0,-4})
+        --local m = gfx.MultMat(rot2)
+        mod.SetCamModMat(m)
+        gfx.SetNVGmodMat(m)
+        local proj = mod.GetProjMatNVG()
+        gfx.SetNVGprojMat(proj)
+        gfx.SetNVGprojMatSkin(proj)
+    end
+end}
+
+xero.func{86-1+1/4,function ()
+    local idt = {
+        1,0,0,0,
+        0,1,0,0,
+        0,0,1,0,
+        0,0,0,1
+    }
+    mod.SetCamModMat(idt)
+end}
+
+xero.func_ease {88, 8, linear, 0, 1, function(p)
+    local _, _, trackTimer = background.GetTiming()
+    if U_REALFD then --trackTimer > 2.0 then
+        local smSin = 10*(math.sin(trackTimer)*.5+.5)
+        local smSin2 = 10*(math.cos(trackTimer)*.5+.5)
+        smSin2 = -smSin*.5
+        local smSin3 = 0
+        --local t0 = gfx.GetTransMat({0,0,-smSin*.1})
+        --local t1 = gfx.GetTransMat({0,-10,0})
+        --local t2 = gfx.GetInverse(t1)
+        --local rot = gfx.GetRotMat({-smSin,smSin2,smSin3})
+        --local zscl = gfx.GetScaleMat({1,1,1})--+.5+.5*math.sin(trackTimer*.5)})
+        --local m = gfx.MultMat(t1,rot,t2,t0,zscl) --TODO m is not affine (m[16] != 1) check and debug
+        local m = gfx.GetTransMat({0,-p*0.5,-p}) -- mine
+        local rot2 = gfx.GetRotMat({0,0,p*45})
+        --local t3 = gfx.GetTransMat({0,0,-4})
+        --local m = gfx.MultMat(rot2)
+        mod.SetCamModMat(m)
+        gfx.SetNVGmodMat(m)
+        local proj = mod.GetProjMatNVG()
+        gfx.SetNVGprojMat(proj)
+        gfx.SetNVGprojMatSkin(proj)
+    end
+end}

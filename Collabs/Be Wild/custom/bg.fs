@@ -117,7 +117,7 @@ uniform float ParticleAmount = float(2); // should be int
 
 
 // MISC CONSTANTS
-float TunnelSpeed = 1.;
+float TunnelSpeed = 0.5;
 float TunnelBaseRotation = 0.0; // Default rotation in radians
 float TunnelBaseTexRotation = 0.5 * HALF_PI; // Rotation of texture for alignment, in radians
 vec2 TunnelScale = vec2(TunnelScaleX, TunnelScaleY);
