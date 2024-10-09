@@ -97,12 +97,12 @@ function render_bg(deltaTime)
 end
 
 function render_bfg(deltaTime)
+	realfd:render_bfg(deltaTime)
 	skade:render_bfg(deltaTime)
 end
 
 function render_fg(deltaTime)
 	skade:render_fg(deltaTime)
-
 end
 
 function render_ffg(deltaTime)
