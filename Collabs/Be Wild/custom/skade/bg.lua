@@ -27,6 +27,10 @@ local bg = {
 		loadDefMod('lsrScale')
 		loadDefMod('reverse')
 		loadDefMod('starTarget')
+		loadDefMod('spinImpact')
+		loadDefMod('freeze')
+		loadDefMod('baseT')
+		loadDefMod('globalT')
 		loadMod('mods')
 		s.particleSystem:init()
 

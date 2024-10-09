@@ -46,6 +46,7 @@ function init()
 	mod.setMQTrackNeg(1)
 	mod.toggleModLines(0)
 
+	mod.setTickLayer(1)
 	-- xero
 	xero.init_command()
 end
