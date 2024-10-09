@@ -82,7 +82,6 @@ local bg = {
 		s.SM_Distort:AddfbTexture("u_fb","FD_bgfb")
 		s.SM_Fuzzy:SetData(FD_U.USM_data)
 		s.SM_Fuzzy:AddfbTexture("u_fb","FD_bgfb")
-		--s.test:AddTexture("u_fb", BG_RealFD.."/texture/test.png")
 
 		loadDefMod("nerd")
 		loadDefMod("swish")
