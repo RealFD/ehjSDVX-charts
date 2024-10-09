@@ -16,6 +16,11 @@ FD_U = {
 	U_fuzzy = 0,
 }
 
+
+local TAP_REC = require('realfd/tap_recep/tap_rec')
+local tap_rec = TAP_REC.new(false)
+local tapFX_rec = TAP_REC.new(true)
+
 local g_res_x,g_res_y = game.GetResolution() 
 
 local function loadDefMod(fileName)
@@ -92,6 +97,10 @@ local bg = {
 	end,
 	render_bg = function (s,deltaTime)
 
+	end,
+	render_bfg = function (s,deltaTime)
+		tapFX_rec:render(deltaTime)
+		tap_rec:render(deltaTime)
 	end,
 	render_fg = function (s,deltaTime)
 
