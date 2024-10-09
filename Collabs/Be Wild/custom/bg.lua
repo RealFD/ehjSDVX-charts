@@ -22,6 +22,13 @@ function cleanup()
 		Sgt.set("gaugeFillC",{1,1,1})
 		Sgt.set("bannerFillC",{1,1,1})
 	end
+
+	-- reset camera parameters
+	local idt = {1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1}
+	mod.SetCamModMat(idt)
+	gfx.SetNVGprojMat(idt)
+	gfx.SetNVGprojMatSkin(idt)
+	gfx.SetNVGmodMat(idt)
 end
 
 function loadMod(fileName)
@@ -94,11 +101,12 @@ end
 
 function render_fg(deltaTime)
 	skade:render_fg(deltaTime)
+
 end
 
 function render_ffg(deltaTime)
 	skade:render_ffg(deltaTime)
-
+	realfd:render_ffg(deltaTime)
 	gfx.ForceRender()
 	local idt = {1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1}
 	gfx.SetNVGmodMat(idt)

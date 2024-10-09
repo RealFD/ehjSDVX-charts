@@ -14,8 +14,6 @@ s.Create(t[2],cord,mdv.MT_T,s.BTB,affection,5,0)
 s.Create(t[3],cord,mdv.MT_T,s.BTC,affection,5,0)
 s.Create(t[4],cord,mdv.MT_T,s.BTD,affection,5,0)
 
-game.Print(tostring(table.unpack(t)))
-
 xero.definemod {"nerd","nerdP","nerdD", function (b,p,d)
     local beat = b
     local val = p
