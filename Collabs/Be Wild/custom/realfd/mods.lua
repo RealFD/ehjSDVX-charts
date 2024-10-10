@@ -116,7 +116,7 @@ end
 -- Usage:
 -- setCameraEase(t) to set or update parameters multiple times
 
-local function setEase(t,val)
+local function setEase(t,val,type)
     local params = {
         start = t.start or t[1],
         length = t.length or t[2],
@@ -131,6 +131,9 @@ local function setEase(t,val)
     end}
     
 end
+
+setEase({22-(1/16),0.5,outExpo,100,.9},"U_gate_size")
+setEase({22-(1/16),0.5,instant,1,0.9},"U_gate_fade")
 
 setEase({24-(4/16),0.25,inExpo,0,.25},"U_fuzzy")
 setEase({32,0.25,outExpo,.25,-1},"U_fuzzy")

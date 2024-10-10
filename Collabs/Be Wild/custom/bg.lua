@@ -89,9 +89,11 @@ function render_bg(deltaTime)
 		LSR_R_OLD_ROT = game.GetKnob(1)
 	end
 	skade:render_bg(deltaTime)
-	realfd:render_bg(deltaTime)
+
 	background.SetParamf("u_alpha",Ubgfs.alpha)
 	background.DrawShader()
+
+	realfd:render_bg(deltaTime)
 
 	xero.update_command()
 end

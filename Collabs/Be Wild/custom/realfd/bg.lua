@@ -14,6 +14,9 @@ FD_U = {
 			},
 	U_distort = 0,
 	U_fuzzy = 0,
+	U_gate_color = {255/255,255/255,255/255},
+	U_gate_size = 1,
+	U_gate_fade = 1,
 }
 
 
@@ -57,6 +60,7 @@ end
 local bg = {
 	SM_Distort = gfx.CreateShadedMesh("distort",BG_RealFD.."/shaders/"),
 	SM_Fuzzy = gfx.CreateShadedMesh("fuzzy",BG_RealFD.."/shaders/"),
+	SM_Gate = track.CreateShadedMeshOnTrack("gate",BG_RealFD.."/shaders/"),
 	FBText = gfx.CreatefbTexture("FD_bgfb",g_res_x,g_res_y),
 	renderDebugger = function(s)
 		local r,b,g = game.GetLaserColor(0)
@@ -66,7 +70,7 @@ local bg = {
 		tr1,tg1,tb1 = r1/255,g1/255,b1/255
 		
 		local bpm = gameplay.bpm
-		barTimer, _, trackTimer = background.GetTiming()
+		local barTimer, _, trackTimer = background.GetTiming()
 		local currBeat = background.GetBeat()
 		local beat = currBeat+background.GetBarTime()
 
@@ -88,6 +92,15 @@ local bg = {
 		s.SM_Fuzzy:SetData(FD_U.USM_data)
 		s.SM_Fuzzy:AddfbTexture("u_fb","FD_bgfb")
 
+	if U_REALFD then
+		s.SM_Gate:SetPosition(0,10,0)
+		s.SM_Gate:SetScale(5,5,5)
+		s.SM_Gate:SetRotation(0,0,90)
+		s.SM_Gate:SetData(FD_U.USM_data)
+		--s.SM_Gate:SetPrimitiveType(s.SM_Gate.PRIM_TRIFAN)
+		--s.SM_Gate:SetBlendMode(s.SM_Gate.BLEND_ADD)
+	end
+	
 		loadDefMod("nerd")
 		loadDefMod("swish")
 		loadDefMod("test")
@@ -96,7 +109,15 @@ local bg = {
 		loadMod("mods")
 	end,
 	render_bg = function (s,deltaTime)
-
+		if U_REALFD then
+		local _ , _, trackTimer = background.GetTiming()
+		s.SM_Gate:SetParam("u_time",trackTimer)
+		s.SM_Gate:SetParamVec3("color",table.unpack(FD_U.U_gate_color))
+		s.SM_Gate:SetParamVec2("u_resolution",g_res_x,g_res_y)
+		s.SM_Gate:SetParam("u_gateSize",FD_U.U_gate_size)
+		s.SM_Gate:SetParam("u_gateAlpha",FD_U.U_gate_fade)
+		s.SM_Gate:Draw()
+	end
 	end,
 	render_bfg = function (s,deltaTime)
 		tapFX_rec:render(deltaTime)
