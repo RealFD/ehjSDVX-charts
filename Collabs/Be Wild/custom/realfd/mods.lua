@@ -132,31 +132,6 @@ local function setEase(t,val,type)
     
 end
 
-local function setCord(tEase,tCord,val)
-    local params = {
-        start = tEase.start or tEase[1],
-        length = tEase.length or tEase[2],
-        ease = tEase.ease or tEase[3],
-        Vstart = tEase.Vstart or tEase[4],
-        Vend = tEase.Vend or tEase[5],
-        Tmat = tEase.Tmat or tEase[6],
-        Rmat = tEase.Rmat or tEase[7],
-        Xpos = tCord.X or tCord[1],
-        Ypos = tCord.Y or tCord[2],
-        Zpos = tCord.Z or tCord[3]
-    }
-    xero.func_ease {params.start, params.length, params.ease, params.Vstart, params.Vend, function(p)
-        if params.Xpos then
-            FD_U[val][1] = p
-        elseif params.Ypos then
-            FD_U[val][2] = p
-        elseif params.Zpos then
-            FD_U[val][3] = p
-        end
-    end}
-    
-end
-
 setEase({23.80,0.1,outExpo,100,.2},"U_gate_size")
 setEase({23.80,0.1,instant,1,0.9},"U_gate_fade")
 
