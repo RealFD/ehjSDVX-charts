@@ -16,6 +16,7 @@ FD_U = {
 	U_fuzzy = 0,
 	U_gate_color = {255/255,255/255,255/255},
 	U_gate_size = 1,
+	U_gate_pos = {0,3,-1},
 	U_gate_fade = 1,
 }
 
@@ -92,12 +93,12 @@ local bg = {
 		s.SM_Fuzzy:SetData(FD_U.USM_data)
 		s.SM_Fuzzy:AddfbTexture("u_fb","FD_bgfb")
 
-		s.SM_Gate:SetPosition(0,10,0)
-		s.SM_Gate:SetScale(5,5,5)
+		s.SM_Gate:SetPosition(table.unpack(FD_U.U_gate_pos))
+		s.SM_Gate:SetScale(7,7,7)
 		s.SM_Gate:SetRotation(0,0,90)
 		s.SM_Gate:SetData(FD_U.USM_data)
 		--s.SM_Gate:SetPrimitiveType(s.SM_Gate.PRIM_TRIFAN)
-		--s.SM_Gate:SetBlendMode(s.SM_Gate.BLEND_ADD)
+		--s.SM_Gate:SetBlendMode(s.SM_Gate.BLEND_MULT)
 	
 		loadDefMod("nerd")
 		loadDefMod("swish")
