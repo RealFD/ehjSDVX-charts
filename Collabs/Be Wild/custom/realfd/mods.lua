@@ -135,6 +135,9 @@ end
 setEase({22-(1/16),0.5,outExpo,100,.9},"U_gate_size")
 setEase({22-(1/16),0.5,instant,1,0.9},"U_gate_fade")
 
+setEase({32-(1/16),0.5,outExpo,.9,100},"U_gate_size")
+setEase({32-(1/16),0.5,outExpo,0.9,0},"U_gate_fade")
+
 setEase({24-(4/16),0.25,inExpo,0,.25},"U_fuzzy")
 setEase({32,0.25,outExpo,.25,-1},"U_fuzzy")
 
@@ -183,9 +186,9 @@ xero.ease{102+(15/32),0.5,bounce,1,"ShaderN"}
 
 setXeroAlternatingMods({ModName1 = "RightSide", ModName2 = "LeftSide", start = 70, ending = 5, l_per = 0.5, l_ease = 1/4, easing = bounce, signiture = 1/4, amount = 4})
 
-xero.ease{72,1,linear,-.5,"LeftSideP"}
+xero.ease{72,1,bounce,-.5,"LeftSideP"}
 
-xero.ease{72,1,linear,-.5,"RightSideP"}
+xero.ease{72,1,bounce,-.5,"RightSideP"}
 
 
 --setAndEaseCustom(44,4,1/4,inSine,"nerd",4,{1, 2, 3, 4},{mdv.BT_W, mdv.BT_W, mdv.BT_W, mdv.BT_W})

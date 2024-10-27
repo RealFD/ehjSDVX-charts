@@ -92,14 +92,12 @@ local bg = {
 		s.SM_Fuzzy:SetData(FD_U.USM_data)
 		s.SM_Fuzzy:AddfbTexture("u_fb","FD_bgfb")
 
-	if U_REALFD then
 		s.SM_Gate:SetPosition(0,10,0)
 		s.SM_Gate:SetScale(5,5,5)
 		s.SM_Gate:SetRotation(0,0,90)
 		s.SM_Gate:SetData(FD_U.USM_data)
 		--s.SM_Gate:SetPrimitiveType(s.SM_Gate.PRIM_TRIFAN)
 		--s.SM_Gate:SetBlendMode(s.SM_Gate.BLEND_ADD)
-	end
 	
 		loadDefMod("nerd")
 		loadDefMod("swish")
@@ -109,7 +107,6 @@ local bg = {
 		loadMod("mods")
 	end,
 	render_bg = function (s,deltaTime)
-		if U_REALFD then
 		local _ , _, trackTimer = background.GetTiming()
 		s.SM_Gate:SetParam("u_time",trackTimer)
 		s.SM_Gate:SetParamVec3("color",table.unpack(FD_U.U_gate_color))
@@ -117,7 +114,6 @@ local bg = {
 		s.SM_Gate:SetParam("u_gateSize",FD_U.U_gate_size)
 		s.SM_Gate:SetParam("u_gateAlpha",FD_U.U_gate_fade)
 		s.SM_Gate:Draw()
-	end
 	end,
 	render_bfg = function (s,deltaTime)
 		tapFX_rec:render(deltaTime)

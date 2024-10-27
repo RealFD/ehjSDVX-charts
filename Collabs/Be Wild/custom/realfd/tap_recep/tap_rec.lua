@@ -12,8 +12,7 @@ function Tap_rec.new(isFx)
     }
 
 	s.sm:SetPrimitiveType(s.sm.PRIM_TRIFAN)
-	--s.sm:SetBlendMode(s.sm.BLEND_ADD)
-
+    
     local sx = 1
     local sy = 1
     if isFx then
