@@ -58,6 +58,30 @@ xero.set{82,OriginalHispeed,"hispeedP"}
 local bs1 = .25
 local bs2 = .5
 
+local imgSkd1 = gfx.CreateImage(P_SKADE.."skd1.png",0)
+local imgSkd2 = gfx.CreateImage(P_SKADE.."skd2.png",0)
+xero.func_ease{80,1,linear,0,1,function(p)
+	local rx,ry = game.GetResolution()
+	local w = 1024;local h = 582
+	local r = 0
+	local x = rx*.25; local y = ry*.01
+
+	local ny = y
+	local pe = inExpo((p)/.8)
+	r = pe
+	ny = y-pe*4000
+	do
+		gfx.Save()
+		gfx.Translate(w,h)
+		gfx.Rotate(r)
+		gfx.Translate(-w,-h)
+		gfx.ImageRect(x,ny,w*1.15,h*1.15,imgSkd2,inExpo(1-p)*3.5,0)
+		gfx.Restore()
+	end
+	local nx = x-pe*2000
+	gfx.ImageRect(nx,y,w*1.15,h*1.15,imgSkd1,inExpo(1-p)*3.5,0)
+end}
+
 xero.perframe{80,4,"baseScale"}
 xero.ease{80,1/16,linear,1/bs1,"baseScaleY"}
 xero.ease{81,1/16,linear,1/bs2,"baseScaleY"}
@@ -96,3 +120,19 @@ xero.perframe{82,2,"spinImpactSlam"}
 xero.set{82,50,"spinImpactSlamP"}
 xero.ease{82,1/4,outExpo,0,"spinImpactSlamP"}
 xero.set{82+1/4,0,"spinImpactSlamP"}
+
+xero.func_ease{102,1/4,linear,1,0,function(p)
+	Ubgfs.alpha = p
+end}
+xero.func_ease{102+1/4+1/8,1/4,linear,0,1,function(p)
+	Ubgfs.alpha = p
+end}
+xero.func_ease{103,1/4,linear,1,0,function(p)
+	Ubgfs.alpha = p
+end}
+xero.func_ease{103+1/4+1/8,1/4,linear,0,1,function(p)
+	Ubgfs.alpha = p
+end}
+xero.func{120,function()
+	Ubgfs.alpha = 0
+end}
