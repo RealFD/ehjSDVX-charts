@@ -17,5 +17,5 @@ uniform mat4 u_t;
 
 void main() {
 	fsTex = inTex;
-	gl_Position = proj * camera * world * u_t * vec4(inPos, 1);
+	gl_Position = proj * camera * u_t * vec4(inPos, 1);
 }
