@@ -1,11 +1,4 @@
-local Create = function (name,mst,mt,ml,ma,amount,layer)
-    mod.setEModSplineType(mst)
-    mod.addMod(name,mt)
-    mod.setEMod(name)
-    mod.setModLayer(layer)
-    mod.createSpline(amount)
-    mod.setModProperty(ml,ma)
-end
+local s = dofile(background.GetPath().."/realfd/shortcuts.lua")
 
 local splineamount = 128
 local v = {}
@@ -13,11 +6,11 @@ for i = 1, splineamount do
     v[i] = 0
 end
 
-Create("L1",mdv.MST_X,mdv.MT_T,mdv.LSL,mdv.MA_LS,splineamount,2)
-Create("L2",mdv.MST_X,mdv.MT_T,mdv.LSL,mdv.MA_LS,splineamount,2)
+s.Create("L1",mdv.MST_X,mdv.MT_T,mdv.LSL,mdv.MA_LS,splineamount,2)
+s.Create("L2",mdv.MST_X,mdv.MT_T,mdv.LSL,mdv.MA_LS,splineamount,2)
 
-Create("R1",mdv.MST_Z,mdv.MT_T,mdv.LSR,mdv.MA_LS,splineamount,1)
-Create("R2",mdv.MST_Z,mdv.MT_T,mdv.LSR,mdv.MA_LS,splineamount,1)
+s.Create("R1",mdv.MST_Z,mdv.MT_T,mdv.LSR,mdv.MA_LS,splineamount,1)
+s.Create("R2",mdv.MST_Z,mdv.MT_T,mdv.LSR,mdv.MA_LS,splineamount,1)
 
 xero.definemod {"LaserWave","LWP","LWX","LWY", function (b,p,x,y)
     local beat = b
@@ -69,4 +62,4 @@ xero.setdefault{0,"LWP"}
 xero.setdefault{0,"LWX"}
 xero.setdefault{0,"LWY"}
 
-xero.linkmod{"LaserWave",{"LWP","LWX","LWY"}}
+xero.linkmod{"LaserWave",{"L1","L2","R1","R2"}}

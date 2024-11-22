@@ -61,6 +61,17 @@ local function setXeroAlternatingMods(t)
     end
 end
 
+local sgt = require('template/ehj/sharedGlobalTable')
+
+local setAllFill = function(p)
+	sgt.set("songInfoFillC",{p,p,p})
+	sgt.set("scoreFillC",{p,p,p})
+
+	sgt.set("critLineFillC",{p,p,p})
+	sgt.set("consoleFillC",{p,p,p})
+	sgt.set("gaugeFillC",{p,p,p})
+	sgt.set("bannerFillC",{p,p,p})
+end
 
 -- Set parameters for the cam function (can be called multiple times)
 local function setCameraEase(t,matrixFunc)
@@ -131,6 +142,11 @@ local function setEase(t,val,type)
     end}
     
 end
+
+xero.func_ease {-1, 7, linear, -1, 1, function(p)
+    Ubgfs.alpha = p
+    setAllFill(p)
+end}
 
 setEase({23.80,0.1,outExpo,100,.2},"U_gate_size")
 setEase({23.80,0.1,instant,1,0.9},"U_gate_fade")
@@ -220,17 +236,6 @@ local matrixFuncTest = function(p)
 end
 
 setCameraEase({71,1,bounce,0,1,{0,2,2}},matrixFuncTest)
-
-local matrixFuncTest2 = function(p)
-    -- Camera transformation matrices
-    local m = gfx.GetTransMat({0, p * -2, p * -2})  -- Translation matrix
-    local rot2 = gfx.GetRotMat({-p * 60, 0, 0})  -- Rotation matrix
-    
-    -- Combine rotation and translation matrices
-    return gfx.MultMat(rot2, m)
-end
-
-setCameraEase({91,1,bounce,0,1,{0,2,2}},matrixFuncTest2)
 
 xero.func{71-1,function ()
     local idt = {
@@ -336,4 +341,14 @@ xero.func_ease {88, 8, linear, 0, 1, function(p)
         gfx.SetNVGprojMat(proj)
         gfx.SetNVGprojMatSkin(proj)
     end
+end}
+
+xero.func{100,function ()
+    local idt = {
+        1,0,0,0,
+        0,1,0,0,
+        0,0,1,0,
+        0,0,0,1
+    }
+    mod.SetCamModMat(idt)
 end}

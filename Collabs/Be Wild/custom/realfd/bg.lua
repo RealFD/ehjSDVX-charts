@@ -20,7 +20,6 @@ FD_U = {
 	U_gate_fade = 1,
 }
 
-
 local TAP_REC = require('realfd/tap_recep/tap_rec')
 local tap_rec = TAP_REC.new(false)
 local tapFX_rec = TAP_REC.new(true)
