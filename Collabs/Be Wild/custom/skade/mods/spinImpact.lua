@@ -39,7 +39,7 @@ xero.definemod {"spinImpact","spinImpactP", function(b,p)
 end}
 
 xero.setdefault {0,"spinImpactP"}
-xero.linkmod{"spinImpact",{"spinImpactT","spinImpactRotT","spinImpactRotT2"}}
+xero.linkmod{"spinImpact",{"spinImpactR","spinImpactRT","spinImpactRT2"}}
 
 --spinImpactSlam
 mod.setEModSplineType(mdv.MST_X)
