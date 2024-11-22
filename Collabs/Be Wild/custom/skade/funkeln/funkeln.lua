@@ -34,7 +34,7 @@ end
 local particleSystem = {
 	sm = track.CreateShadedMeshOnTrack("star",P_SKADE.."funkeln/"),
 	timer = 0,
-	particleCount = 128,
+	particleCount = 12,
 	particleSizeSpread = 0.5,
 	psize = 32,
 	particles = {},
@@ -96,7 +96,7 @@ local particleSystem = {
 			s.sm:SetParam("u_time",p.time)
 			s.sm:Draw()
 
-			if p.y > 4 then 
+			if p.y > 4 then
 				s.particles[i] = initializeParticle(false,s.particleSizeSpread)
 			end
 		end
