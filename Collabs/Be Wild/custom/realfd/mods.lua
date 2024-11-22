@@ -63,14 +63,15 @@ end
 
 local sgt = require('template/ehj/sharedGlobalTable')
 
+--  set("name",{r,g,b,a})
 local setAllFill = function(p)
-	sgt.set("songInfoFillC",{p,p,p})
-	sgt.set("scoreFillC",{p,p,p})
+	sgt.set("songInfoFillC",{p,p,p,p})
+	sgt.set("scoreFillC",{p,p,p,p})
 
-	sgt.set("critLineFillC",{p,p,p})
-	sgt.set("consoleFillC",{p,p,p})
-	sgt.set("gaugeFillC",{p,p,p})
-	sgt.set("bannerFillC",{p,p,p})
+	sgt.set("critLineFillC",{p,p,p,p})
+	sgt.set("consoleFillC",{p,p,p,p})
+	sgt.set("gaugeFillC",{p,p,p,p})
+	sgt.set("bannerFillC",{p,p,p,p})
 end
 
 -- Set parameters for the cam function (can be called multiple times)

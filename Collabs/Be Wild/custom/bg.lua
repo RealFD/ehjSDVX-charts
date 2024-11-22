@@ -13,14 +13,18 @@ function cleanup()
 	realfd:cleanup()
 
 	do
+
 		globals.bannerOpacity = 0
 		globals.critLineAlpha = 1
-		Sgt.set("songInfoFillC",{1,1,1})
-		Sgt.set("scoreFillC",{1,1,1})
-		Sgt.set("critLineFillC",{1,1,1})
-		Sgt.set("consoleFillC",{1,1,1})
-		Sgt.set("gaugeFillC",{1,1,1})
-		Sgt.set("bannerFillC",{1,1,1})
+
+		--  set("name",{r,g,b,a}) --
+		Sgt.set("songInfoFillC",{1,1,1,1})
+		Sgt.set("scoreFillC",{1,1,1,1})
+		Sgt.set("critLineFillC",{1,1,1,1})
+		Sgt.set("consoleFillC",{1,1,1,1})
+		Sgt.set("gaugeFillC",{1,1,1,1})
+		Sgt.set("bannerFillC",{1,1,1,1})
+
 	end
 
 	-- reset camera parameters
