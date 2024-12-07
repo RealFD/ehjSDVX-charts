@@ -97,7 +97,7 @@ local bg = {
 					0,0,1,move-sz,
 					0,0,0,1,
 				}
-				--t = gfx.MultMat(gfx.GetRotMat({0,0,0}),t)
+				t = gfx.MultMat(gfx.GetRotMat({90,0,0}),t)
 				s.starfield:SetParam("u_i",i*1.2+3)
 				s.starfield:SetParamMat4("u_t",t)
 
