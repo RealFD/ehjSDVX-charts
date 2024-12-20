@@ -123,7 +123,7 @@ local bg = {
 	render_bg = function (s,deltaTime)
 		testTimer = testTimer + deltaTime
 		local _ , _, trackTimer = background.GetTiming()
-		treeCam = gfx.MultMat(gfx.GetRotMat({0,testTimer*10.,0}),gfx.GetTransMat({0,8,126}),gfx.GetRotMat({0,0,0}))
+		treeCam = gfx.MultMat(gfx.GetRotMat({0,testTimer*10.,0}),gfx.GetTransMat({0,8,126}),gfx.GetRotMat({-90,0,0}))
 		s.SM_Tree:SetParamMat4("u_cam",treeCam)
 		s.SM_Tree:SetParam("u_time",testTimer)
 		s.SM_Tree:Draw()

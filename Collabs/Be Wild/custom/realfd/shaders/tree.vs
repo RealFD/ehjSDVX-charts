@@ -22,6 +22,6 @@ void main()
     fsTex = inTex;
     vec4 pos = vec4(inPos, 1.0);
     posVS = pos.xyz;
-    pos = proj * inverse(u_cam) * pos;
+    pos = proj * camera * world * inverse(u_cam) * pos;
     gl_Position = pos;
 }
