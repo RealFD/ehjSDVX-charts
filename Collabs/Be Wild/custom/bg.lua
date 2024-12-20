@@ -129,7 +129,7 @@ function render_ffg(deltaTime)
 			gfx.Text("time "..string.format("%.3f",trackTimer),100,810)
 		end
 	elseif U_REALFD then
-		realfd:renderDebugger()
+		--realfd:renderDebugger()
 	end
 	if gameplay.practice_setup ~= nil then
 		xero.printmods{}

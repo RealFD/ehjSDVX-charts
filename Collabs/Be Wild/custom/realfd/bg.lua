@@ -2,6 +2,8 @@
 
 local BG_RealFD = background.GetPath().."realfd/"
 
+local Baum = require("models.Tree")
+
 -- Global Uniforms From RealFD
 FD_U = {
 	USM_data = {
@@ -57,7 +59,14 @@ local function debuger(state,tab,pos)
 	end
 end
 
+local testTimer = 0
+
 local bg = {
+	SM_Tree = track.CreateShadedMeshOnTrack("tree",BG_RealFD.."/shaders/"),
+	treeCam = {1,0,0,0,
+	           0,1,0,0,
+			   0,0,1,0,
+			   0,0,0,1},
 	SM_Distort = gfx.CreateShadedMesh("distort",BG_RealFD.."/shaders/"),
 	SM_Fuzzy = gfx.CreateShadedMesh("fuzzy",BG_RealFD.."/shaders/"),
 	SM_Gate = track.CreateShadedMeshOnTrack("gate",BG_RealFD.."/shaders/"),
@@ -99,6 +108,11 @@ local bg = {
 		--s.SM_Gate:SetPrimitiveType(s.SM_Gate.PRIM_TRIFAN)
 		--s.SM_Gate:SetBlendMode(s.SM_Gate.BLEND_MULT)
 	
+		s.SM_Tree:SetData(Baum)
+		s.SM_Tree:AddTexture("tex1",background.GetPath().."models/test.png")
+		s.SM_Tree:SetDepthTest(true)
+		s.SM_Tree:SetDepthMask(true)
+
 		loadDefMod("nerd")
 		loadDefMod("swish")
 		loadDefMod("test")
@@ -107,7 +121,12 @@ local bg = {
 		loadMod("mods")
 	end,
 	render_bg = function (s,deltaTime)
+		testTimer = testTimer + deltaTime
 		local _ , _, trackTimer = background.GetTiming()
+		treeCam = gfx.MultMat(gfx.GetRotMat({0,testTimer*10.,0}),gfx.GetTransMat({0,8,126}),gfx.GetRotMat({0,0,0}))
+		s.SM_Tree:SetParamMat4("u_cam",treeCam)
+		s.SM_Tree:SetParam("u_time",testTimer)
+		s.SM_Tree:Draw()
 		s.SM_Gate:SetParam("u_time",trackTimer)
 		s.SM_Gate:SetParamVec3("color",table.unpack(FD_U.U_gate_color))
 		s.SM_Gate:SetParamVec2("u_resolution",g_res_x,g_res_y)
