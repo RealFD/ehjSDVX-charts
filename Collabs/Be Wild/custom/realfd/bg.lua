@@ -114,6 +114,7 @@ local bg = {
 		s.SM_Tree:SetDepthMask(true)
 
 		loadDefMod("nerd")
+		loadDefMod("zigzag")
 		loadDefMod("swish")
 		loadDefMod("test")
 		loadDefMod("laser")

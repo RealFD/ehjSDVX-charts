@@ -211,7 +211,17 @@ xero.ease{72,1,bounce,-.5,"RightSideP"}
 
 
 --setAndEaseCustom(44,4,1/4,inSine,"nerd",4,{1, 2, 3, 4},{mdv.BT_W, mdv.BT_W, mdv.BT_W, mdv.BT_W})
+setAndEaseCustom(48,1.5,1/8,outInExpo,"zigzag",4,{1, 2, 3, 4},{math.random(100,200), -math.random(100,200), math.random(100,200), -math.random(100,200)})
 
+setAndEaseCustom(50,1.5,1/8,outInExpo,"zigzag",4,{1, 2, 3, 4},{math.random(100,200), -math.random(100,200), math.random(100,200), -math.random(100,200)})
+
+setAndEaseCustom(52,1.5,1/8,outInExpo,"zigzag",4,{1, 2, 3, 4},{math.random(100,200), -math.random(100,200), math.random(100,200), -math.random(100,200)})
+
+setAndEaseCustom(56,1.5,1/8,outInExpo,"zigzag",4,{1, 2, 3, 4},{math.random(100,200), -math.random(100,200), math.random(100,200), -math.random(100,200)})
+
+setAndEaseCustom(58,1.5,1/8,outInExpo,"zigzag",4,{1, 2, 3, 4},{math.random(100,200), -math.random(100,200), math.random(100,200), -math.random(100,200)})
+
+setAndEaseCustom(60,1.5,1/8,outInExpo,"zigzag",4,{1, 2, 3, 4},{math.random(100,200), -math.random(100,200), math.random(100,200), -math.random(100,200)})
 
 xero.perframe{14,1,"LaserWave"}
 xero.ease{14,0.45,bounce,1.5,"LWX"}
