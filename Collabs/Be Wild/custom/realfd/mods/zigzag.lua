@@ -29,6 +29,12 @@ xero.definemod {"zigzag","zigzagP","zigzagD", function (b,p,d)
         local ii = i / 127
         mod.setModSpline(i,math.sin(val*math.pi*ii))
     end
+    mod.setEModSplineType(mdv.MST_Z)
+    mod.setEMod(t[dex])
+    for i = 0, 127*2 do
+        local ii = i / 127*2
+        mod.setModSpline(i,math.sin(val*math.pi*ii))
+    end
 end}
 
 xero.setdefault{0,"zigzagP"}
