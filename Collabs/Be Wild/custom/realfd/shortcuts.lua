@@ -1,11 +1,11 @@
 local short = {
-    Create = function (name,mst,mt,ml,ma,amount,layer)
-        mod.setEModSplineType(mst)
-        mod.addMod(name,mt)
-        mod.setEMod(name)
-        mod.setModLayer(layer)
-        mod.createSpline(amount)
-        mod.setModProperty(ml,ma)
+    Create = function (NAME,AXIS,TRANSFORM,MODLANE,MODAFFACTION,AMOUNT,LAYER)
+        mod.setEModSplineType(AXIS)
+        mod.addMod(NAME,TRANSFORM)
+        mod.setEMod(NAME)
+        mod.setModLayer(LAYER)
+        mod.createSpline(AMOUNT)
+        mod.setModProperty(MODLANE,MODAFFACTION)
     end,
     
     LaserL           = mdv.LSL,

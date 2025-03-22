@@ -1,6 +1,6 @@
 ---@meta
 
----> The `mod` class provides various things used in the Fork.
+---> The [mod](mod.lua) class provides various things used in the Fork.
 --->
 --->
 --->

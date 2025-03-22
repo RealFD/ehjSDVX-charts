@@ -113,7 +113,7 @@ local bg = {
 		s.SM_Tree:SetDepthTest(true)
 		s.SM_Tree:SetDepthMask(true)
 
-		loadDefMod("nerd")
+		loadDefMod("ln_swapper")
 		loadDefMod("zigzag")
 		loadDefMod("swish")
 		loadDefMod("test")
@@ -127,7 +127,7 @@ local bg = {
 		treeCam = gfx.MultMat(gfx.GetRotMat({0,testTimer*10.,0}),gfx.GetTransMat({0,8,126}),gfx.GetRotMat({-90,0,0}))
 		s.SM_Tree:SetParamMat4("u_cam",treeCam)
 		s.SM_Tree:SetParam("u_time",testTimer)
-		--s.SM_Tree:Draw()
+		s.SM_Tree:Draw()
 		s.SM_Gate:SetParam("u_time",trackTimer)
 		s.SM_Gate:SetParamVec3("color",table.unpack(FD_U.U_gate_color))
 		s.SM_Gate:SetParamVec2("u_resolution",g_res_x,g_res_y)

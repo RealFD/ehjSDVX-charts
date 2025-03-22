@@ -1,6 +1,6 @@
 ---@meta
 
----> The `mdv` class provides various `Mod Values` for Mod Functions inside `mod.lua`
+---> The [mdv](mdv.lua) class provides various `Mod Values` for Mod Functions inside `mod.lua`
 --->
 ---> Each constant represents a specific type of effect, which can be used to control
 ---> various elements such as buttons, holds, lasers, track, lines, button hit effects, and ticks.

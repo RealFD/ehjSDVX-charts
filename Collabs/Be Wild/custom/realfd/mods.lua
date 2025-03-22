@@ -88,8 +88,6 @@ local function setCameraEase(t,matrixFunc)
         ease = t.ease or t[3],
         Vstart = t.Vstart or t[4],
         Vend = t.Vend or t[5],
-        Tmat = t.Tmat or t[6],
-        Rmat = t.Rmat or t[7],
     }
 
     xero.func_ease {params.start, params.length, params.ease, params.Vstart, params.Vend, function(p)
@@ -128,15 +126,13 @@ end
 -- Usage:
 -- setCameraEase(t) to set or update parameters multiple times
 
-local function setEase(t,val,type)
+local function setShaderEase(t,val,type)
     local params = {
         start = t.start or t[1],
         length = t.length or t[2],
         ease = t.ease or t[3],
         Vstart = t.Vstart or t[4],
         Vend = t.Vend or t[5],
-        Tmat = t.Tmat or t[6],
-        Rmat = t.Rmat or t[7],
     }
     xero.func_ease {params.start, params.length, params.ease, params.Vstart, params.Vend, function(p)
         FD_U[val] = p
@@ -149,31 +145,13 @@ xero.func_ease {-1, 7, linear, -1, 1, function(p)
     setAllFill(p)
 end}
 
-setEase({23.80,0.1,outExpo,100,.2},"U_gate_size")
-setEase({23.80,0.1,instant,1,0.9},"U_gate_fade")
+setShaderEase({23.80,0.1,outExpo,100,.2},"U_gate_size")
+setShaderEase({23.80,0.1,instant,1,0.9},"U_gate_fade")
 
-setEase({24-(1/16),0.5,outExpo,.2,0.1},"U_gate_size")
+setShaderEase({24-(1/16),0.5,outExpo,.2,0.1},"U_gate_size")
 
-setEase({32-(1/16),0.5,outExpo,.9,100},"U_gate_size")
-setEase({32-(1/16),0.5,outExpo,0.9,0},"U_gate_fade")
-
-setEase({24-(4/16),0.25,inExpo,0,.25},"U_fuzzy")
-setEase({32,0.25,outExpo,.25,-1},"U_fuzzy")
-
-setEase({96+(4/16),0.25,bounce,-1,1},"U_fuzzy")
-setEase({96+(12/16),0.25,bounce,-1,1},"U_fuzzy")
-
-setEase({97+(4/16),0.25,bounce,-1,1},"U_fuzzy")
-setEase({97+(12/16),0.25,bounce,-1,1},"U_fuzzy")
-
-setEase({98+(4/16),0.25,bounce,-1,1},"U_fuzzy")
-setEase({98+(12/16),0.25,bounce,-1,1},"U_fuzzy")
-
-setEase({99+(4/16),0.25,bounce,-1,1},"U_fuzzy")
-setEase({99+(12/16),0.25,bounce,-1,1},"U_fuzzy")
-
-setEase({102+(8/16),0.25,bounce,-1,1},"U_fuzzy")
-
+setShaderEase({32-(1/16),0.5,outExpo,.9,100},"U_gate_size")
+setShaderEase({32-(1/16),0.5,outExpo,0.9,0},"U_gate_fade")
 
 --[[
 xero.ease{97+(12/16),0.25,bounce,1,"ShaderP"}
@@ -202,12 +180,6 @@ xero.ease{102+(15/32),0.5,bounce,1,"ShaderN"}
 --xero.ease{12,0.45,bounce,.5,"testP"}
 --xero.ease{16,0.5,bounce,.5,"testP"}
 --xero.ease{18,0.5,bounce,.5,"testP"}
-
-setXeroAlternatingMods({ModName1 = "RightSide", ModName2 = "LeftSide", start = 70, ending = 5, l_per = 0.5, l_ease = 1/4, easing = bounce, signiture = 1/4, amount = 4})
-
-xero.ease{72,1,bounce,-.5,"LeftSideP"}
-
-xero.ease{72,1,bounce,-.5,"RightSideP"}
 
 local distants = {
     {360, 360, 360, 360},
@@ -249,6 +221,8 @@ local matrixFuncTest = function(p)
     return gfx.MultMat(rot2, m)
 end
 
+setXeroAlternatingMods({ModName1 = "RightSide", ModName2 = "LeftSide", start = 70, ending = 5, l_per = 0.5, l_ease = 1/4, easing = bounce, signiture = 1/4, amount = 4})
+
 setCameraEase({71,1,bounce,0,1,{0,2,2}},matrixFuncTest)
 
 xero.func{71-1,function ()
@@ -261,6 +235,9 @@ xero.func{71-1,function ()
     mod.SetCamModMat(idt)
 end}
 
+xero.ease{72,1,bounce,-.5,"LeftSideP"}
+
+xero.ease{72,1,bounce,-.5,"RightSideP"}
 
 xero.func_ease {78-1/4, 1/4, bounce, 0, 1, function(p)
     local _, _, trackTimer = background.GetTiming()
@@ -366,3 +343,7 @@ xero.func{100,function ()
     }
     mod.SetCamModMat(idt)
 end}
+
+-- 112 ln_swapper
+setAndEaseCustom(112,2,0.1,instant,"ln_swapper",4,{1,2,3,4},{0,0,10,10})
+setAndEaseCustom(116,2,0.1,instant,"ln_swapper",4,{1,2,3,4},{10,10,0,0})
