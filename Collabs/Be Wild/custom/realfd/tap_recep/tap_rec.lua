@@ -37,9 +37,9 @@ function Tap_rec.new(isFx)
 	return setmetatable(s,Tap_rec)
 end
 
-function Tap_rec:render(dt,angle)
+function Tap_rec:render(dt,angle,isAlwaysFacing)
 	if not angle then
-		angle =	90
+		angle =	90-19
 	end
 	local s	= self
 
@@ -64,6 +64,10 @@ function Tap_rec:render(dt,angle)
 		tRot[12] = 0.
 		local len =	t[8]+t[12]
 		len	= 1+math.log(len+1,2)*.25
+		if isAlwaysFacing then
+			local alwaysForward	= math.atan(tRot[10],tRot[11])
+			angle =	angle +	alwaysForward*180./math.pi
+		end
 		t2 = gfx.MultMat(t2,tRot,gfx.GetRotMat({angle,0.,0.}),gfx.GetScaleMat({len,len,len}))
 		s.sm:SetParamMat4("u_t",t2)
 
