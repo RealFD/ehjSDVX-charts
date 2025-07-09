@@ -72,6 +72,10 @@ local setAllFill = function(p)
 	sgt.set("consoleFillC",{p,p,p,p})
 	sgt.set("gaugeFillC",{p,p,p,p})
 	sgt.set("bannerFillC",{p,p,p,p})
+    local lr,lg,lb = game.GetLaserColor(0)
+    Sgt.set("LaserLeftFillC",{lr,lg,lb,255})
+    local rr,rg,rb = game.GetLaserColor(1)
+    Sgt.set("LaserRightFillC",{rr,rg,rb,255})
 end
 
 -- Set parameters for the cam function (can be called multiple times)
@@ -140,7 +144,7 @@ local function setShaderEase(t,val,type)
     
 end
 
-xero.func_ease {-1, 7, linear, -1, 1, function(p)
+xero.func_ease {-1, 7, linear, 0, 1, function(p)
     Ubgfs.alpha = p
     setAllFill(p)
 end}
@@ -174,13 +178,6 @@ xero.ease{102+(15/32),0.5,bounce,1,"ShaderP"}
 xero.ease{102+(15/32),0.5,bounce,1,"ShaderN"}
 ]]
 
-
---xero.perframe{10,18,"test"}
---xero.ease{10,0.45,bounce,.5,"testP"}
---xero.ease{12,0.45,bounce,.5,"testP"}
---xero.ease{16,0.5,bounce,.5,"testP"}
---xero.ease{18,0.5,bounce,.5,"testP"}
-
 local distants = {
     {360, 360, 360, 360},
     {1000, 1000, 1000, 1000}
@@ -197,9 +194,6 @@ setAndEaseCustom(56,1.5,1/8,outInExpo,"zigzag",4,{1, 2, 3, 4},distants[2])
 setAndEaseCustom(58,1.5,1/8,outInExpo,"zigzag",4,{1, 2, 3, 4},distants[1])
 
 setAndEaseCustom(60,1.5,1/8,outInExpo,"zigzag",4,{1, 2, 3, 4},distants[2])
-
-xero.perframe{14,1,"LaserWave"}
-xero.ease{14,0.45,bounce,1.5,"LWX"}
 
 local matrixFuncTest0 = function(p)
     -- Camera transformation matrices
@@ -239,8 +233,89 @@ xero.ease{72,1,bounce,-.5,"LeftSideP"}
 
 xero.ease{72,1,bounce,-.5,"RightSideP"}
 
+xero.func{0,function (p)
+    local lr,lg,lb = game.GetLaserColor(0)
+    local rr,rg,rb = game.GetLaserColor(1)
+    Sgt.set("LaserLeftFillC",{lr,lg,lb, 255})
+    Sgt.set("LaserRightFillC",{rr,rg,rb, 255})
+end}
+
+xero.func{16,function (p)
+    local lr,lg,lb = game.GetLaserColor(0)
+    local rr,rg,rb = game.GetLaserColor(1)
+    Sgt.set("LaserLeftFillC",{lr,lg,lb, 255})
+    Sgt.set("LaserRightFillC",{rr,rg,rb, 255})
+end}
+
+xero.func_ease{24-1/4,1/4,instant,0,1,function (p)
+    local div = 4
+    local lr,lg,lb = game.GetLaserColor(0)
+    lr,lg,lb = lr / div, lg / div, lb / div
+    local rr,rg,rb = game.GetLaserColor(1)
+    rr, rg, rb = rr / div, rg / div, rb / div
+    Sgt.set("LaserLeftFillC",{lr,lg,lb,255})
+    Sgt.set("LaserRightFillC",{rr,rg,rb,255})
+end}
+
+xero.func_ease{32,1/4,outBounce,0,1,function (p)
+    local lr,lg,lb = game.GetLaserColor(0)
+    local rr,rg,rb = game.GetLaserColor(1)
+    Sgt.set("LaserLeftFillC",{lr,lg,lb,255})
+    Sgt.set("LaserRightFillC",{rr,rg,rb,255})
+end}
+
+xero.func_ease{80,1/4,instant,0,1,function (p)
+    local lr,lg,lb = 0,0,255
+    local rr,rg,rb = 0,150,200
+    Sgt.set("LaserLeftFillC",{lr,lg,lb,255})
+    Sgt.set("LaserRightFillC",{rr,rg,rb,255})
+end}
+
+xero.func_ease{88,1/4,outBounce,0,1,function (p)
+    local lr,lg,lb = game.GetLaserColor(0)
+    local rr,rg,rb = game.GetLaserColor(1)
+    Sgt.set("LaserLeftFillC",{lr,lg,lb,255})
+    Sgt.set("LaserRightFillC",{rr,rg,rb,255})
+end}
+
+xero.func_ease{102,1/4,instant,0,1,function (p)
+    local div = 4
+    local lr,lg,lb = game.GetLaserColor(0)
+    lr,lg,lb = lr / div, lg / div, lb / div
+    local rr,rg,rb = game.GetLaserColor(1)
+    rr, rg, rb = rr / div, rg / div, rb / div
+    Sgt.set("LaserLeftFillC",{lr,lg,lb,255})
+    Sgt.set("LaserRightFillC",{rr,rg,rb,255})
+end}
+
+xero.func_ease{102+1/2,1/4,instant,0,1,function (p)
+    local lr,lg,lb = game.GetLaserColor(0)
+    local rr,rg,rb = game.GetLaserColor(1)
+    Sgt.set("LaserLeftFillC",{lr,lg,lb,255})
+    Sgt.set("LaserRightFillC",{rr,rg,rb,255})
+end}
+
+xero.func_ease{103,1/4,instant,0,1,function (p)
+    local div = 4
+    local lr,lg,lb = game.GetLaserColor(0)
+    lr,lg,lb = lr / div, lg / div, lb / div
+    local rr,rg,rb = game.GetLaserColor(1)
+    rr, rg, rb = rr / div, rg / div, rb / div
+    Sgt.set("LaserLeftFillC",{lr,lg,lb,255})
+    Sgt.set("LaserRightFillC",{rr,rg,rb,255})
+end}
+
+xero.func_ease{103+1/2,1/4,instant,0,1,function (p)
+    local lr,lg,lb = game.GetLaserColor(0)
+    local rr,rg,rb = game.GetLaserColor(1)
+    Sgt.set("LaserLeftFillC",{lr,lg,lb,255})
+    Sgt.set("LaserRightFillC",{rr,rg,rb,255})
+end}
+
+
 xero.func_ease {78-1/4, 1/4, bounce, 0, 1, function(p)
     local _, _, trackTimer = background.GetTiming()
+
     if U_REALFD then
         local smSin = 10*(math.sin(trackTimer)*.5+.5)
         local smSin2 = 10*(math.cos(trackTimer)*.5+.5)

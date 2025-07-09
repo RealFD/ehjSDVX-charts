@@ -8,10 +8,10 @@
 ---> # ModAffection's:
 ---------------------------------------------------------
 ---> - `MA_BT`    Represents the Button Effect.
----> - `MA_HOLD`  Represents the Hold Effect.
----> - `MA_LASER` Represents the Laser Effect.
----> - `MA_TRACK` Represents the Track Effect.
----> - `MA_LINE`  Represents the Line Effect.
+---> - `MA_HLD`   Represents the Hold Effect.
+---> - `MA_LS`    Represents the Laser Effect.
+---> - `MA_TRK`   Represents the Track Effect.
+---> - `MA_LIN`   Represents the Line Effect.
 ---> - `MA_BHE`   Represents the Button Hit Effect.
 ---> - `MA_TICK`  Represents the Tick effect.
 ---> - `MA_ALL`   Represents all Effects combined.

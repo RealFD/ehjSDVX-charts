@@ -3,7 +3,6 @@ dofile(background.GetPath().."bg0.lua")
 dofile(background.GetPath().."user.lua")
 local skade = require('skade/bg')
 local realfd = require('realfd/bg')
-
 Sgt = require('template/ehj/sharedGlobalTable')
 
 OriginalXspeed = mod.GetHispeed()
@@ -25,6 +24,14 @@ function cleanup()
 		Sgt.set("gaugeFillC",{1,1,1,1})
 		Sgt.set("bannerFillC",{1,1,1,1})
 
+		if globals["LaserLeftFillCisSet"] then
+			local r,g,b = game.GetLaserColor(0)
+			Sgt.set("LaserLeftFillC",{r,g,b,255})
+		end
+		if globals["LaserRightFillCisSet"] then
+			local r,g,b = game.GetLaserColor(1)
+			Sgt.set("LaserRightFillC",{r,g,b,255})
+		end
 	end
 
 	-- reset camera parameters
@@ -129,9 +136,50 @@ function render_ffg(deltaTime)
 			gfx.Text("time "..string.format("%.3f",trackTimer),100,810)
 		end
 	elseif U_REALFD then
+		if gameplay.practice_setup ~= nil then
+			local labels = {"Song Info", "Score", "Critline", "Console", "Gauge", "Banner","Laser Left","Laser Right"}
+			local values = {
+				Sgt.get("songInfoFillC", 4),
+				Sgt.get("scoreFillC", 4),
+				Sgt.get("critLineFillC", 4),
+				Sgt.get("consoleFillC", 4),
+				Sgt.get("gaugeFillC", 4),
+				Sgt.get("bannerFillC", 4),
+				Sgt.get("LaserLeftFillC",4),
+				Sgt.get("LaserRightFillC",4)
+			}
+			
+			local charWidth = 10
+			local spacePadding = 10
+
+			-- Calculate the maximum label width by multiplying the length of each label by the charWidth
+			local maxLabelWidth = 0
+			for i = 1, #labels do
+				local labelWidth = #labels[i] * charWidth
+				maxLabelWidth = math.max(maxLabelWidth, labelWidth)
+			end
+
+			-- Starting X position for the labels
+			local xPosition = 100
+			local yPosition = 790
+
+			gfx.BeginPath()
+			gfx.FillColor(255,255,255,255)
+			local equalsPosition = xPosition + maxLabelWidth + spacePadding
+			gfx.FontSize(32)
+			-- Use a for loop to display the text
+			for i = 1, #labels-2 do
+				gfx.Text(string.format("%s", labels[i]), xPosition, yPosition)
+				gfx.Text("=", equalsPosition, yPosition)
+				gfx.Text(string.format(" %.1f / %.1f / %.1f / %.1f", values[i][1],values[i][2],values[i][3],values[i][4]), equalsPosition+xPosition/2, yPosition)
+				yPosition = yPosition + 22  -- Adjust the vertical spacing between each line
+			end
+		end
+
 		realfd:renderDebugger()
 	end
 	if gameplay.practice_setup ~= nil then
+		gfx.FontSize(16)
 		xero.printmods{}
 	end
 end

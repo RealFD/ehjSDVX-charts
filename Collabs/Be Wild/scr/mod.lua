@@ -85,7 +85,7 @@ end
 
 ---# Modification Properties
 ---------------------------------------------------------
---- @param ModLane integer found in `mdv.lua` under any of the `mdv.ML_` or `mdv.BT$`
+--- @param ModLane integer found in `mdv.lua` under any of the `mdv.ML_` or `mdv.BTA`
 --- @param ModAffection integer found in `mdv.lua` under any of the `mdv.MA_`
 --- @ Below you will
 ---  @see mdv.ML_ALL All Button Lanes

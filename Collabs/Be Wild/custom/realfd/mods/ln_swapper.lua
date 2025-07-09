@@ -13,7 +13,7 @@ for i = 0,2 do
 	mod.setEModSplineType(mdv.MST_Y+i)
 	mod.createSpline(2)
 end
-mod.setModProperty(s.BTA,mdv.MA_ALL-mdv.MA_TICK)
+mod.setModProperty(s.BTA,mdv.MA_ALL-mdv.MA_TRK-mdv.MA_TICK)
 -------------------------------------------------------------------
 mod.addMod(t[2], mdv.MT_T)
 mod.setEMod(t[2])
@@ -22,7 +22,7 @@ for i = 0,2 do
 	mod.setEModSplineType(mdv.MST_Y+i)
 	mod.createSpline(2)
 end
-mod.setModProperty(s.BTB,mdv.MA_ALL-mdv.MA_TICK)
+mod.setModProperty(s.BTB,mdv.MA_ALL-mdv.MA_TRK-mdv.MA_TICK)
 -------------------------------------------------------------------
 mod.addMod(t[3], mdv.MT_T)
 mod.setEMod(t[3])
@@ -31,7 +31,7 @@ for i = 0,2 do
 	mod.createSpline(2)
 end
 mod.setModLayer(1)
-mod.setModProperty(s.BTC,mdv.MA_ALL-mdv.MA_TICK)
+mod.setModProperty(s.BTC,mdv.MA_ALL-mdv.MA_TRK-mdv.MA_TICK)
 -------------------------------------------------------------------
 mod.addMod(t[4], mdv.MT_T)
 mod.setEMod(t[4])
@@ -40,7 +40,7 @@ for i = 0,2 do
 	mod.createSpline(2)
 end
 mod.setModLayer(1)
-mod.setModProperty(s.BTD,mdv.MA_ALL-mdv.MA_TICK)
+mod.setModProperty(s.BTD,mdv.MA_ALL-mdv.MA_TRK-mdv.MA_TICK)
 -------------------------------------------------------------------
 
 xero.definemod {"ln_swapper","ln_swapperP","ln_swapperD", function (b,p,d)

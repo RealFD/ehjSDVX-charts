@@ -30,6 +30,7 @@ end
 xero.func_ease{24-1/4,1/4,linear,1,.1,function(p)
 	--globals.bannerOpacity = 0
 	--globals.critLineAlpha = 1
+	setAllFill(p)
 end}
 
 xero.ease{32-1/8,1/8,inExpo,0,"starTargetP"}
